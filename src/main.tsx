@@ -10,7 +10,14 @@ import ReactQueryDevtools from "./tanstack-query-lite/react/ReactQueryDevtools";
 
 import "./index.css";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queires: {
+      staleTime: 0,
+      gcTime: 1_000 * 60,
+    },
+  },
+});
 
 const rootElement = document.getElementById("root")!;
 

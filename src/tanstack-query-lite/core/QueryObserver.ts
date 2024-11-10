@@ -1,12 +1,5 @@
 import { QueryClient } from "./QueryClient";
-
-type QueryObserverOptions = {
-  staleTime?: number;
-  gcTime?: number;
-  queryKey: string[];
-  queryHash: string;
-  queryFn: () => Promise<unknown>;
-};
+import { QueryObserverOptions } from "./types";
 
 class QueryObserver {
   client: QueryClient;
@@ -20,7 +13,7 @@ class QueryObserver {
   notify = () => {};
 
   getQuery = () => {
-    const query = this.client.getQueryCache().getQuery(this.options);
+    const query = this.client.getQueryCache().build(this.client, this.options);
 
     return query;
   };
@@ -30,7 +23,7 @@ class QueryObserver {
   };
 
   executeFetch = () => {
-    const query = this.client.getQueryCache().getQuery(this.options);
+    const query = this.client.getQueryCache().build(this.client, this.options);
 
     return query.fetch();
   };

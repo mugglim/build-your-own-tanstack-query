@@ -11,8 +11,6 @@ const usePostDetailQuery = ({ id }: { id: string }) => {
 
       return data;
     },
-    staleTime: 3_000,
-    gcTime: 5_000,
   });
 };
 

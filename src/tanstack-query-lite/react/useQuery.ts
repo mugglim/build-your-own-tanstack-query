@@ -1,9 +1,10 @@
 import { QueryClient } from "./../core/QueryClient";
-import { QueryOptions } from "../core/types";
 import QueryObserver from "../core/QueryObserver";
-import useBaseQuery from "./useBaserQuery";
 
-const useQuery = (options: QueryOptions, queryClient?: QueryClient) => {
+import useBaseQuery from "./useBaserQuery";
+import { UseQueryOptions } from "./types";
+
+const useQuery = (options: UseQueryOptions, queryClient?: QueryClient) => {
   return useBaseQuery(options, QueryObserver, queryClient);
 };
 

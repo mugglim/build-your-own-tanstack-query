@@ -1,29 +1,37 @@
 import QueryCache from "./QueryCache";
 import QueryObserver from "./QueryObserver";
-import { QueryOptions } from "./types";
+import { QueryKey, QueryOptions } from "./types";
 
 type QueryStatus = "pending" | "error" | "success";
 
-export type QueryState<TData = unknown, TError = unknown> = {
+export interface QueryState<TData = unknown, TError = unknown> {
   status: QueryStatus;
   isFetching: boolean;
   data: TData | undefined;
   error: TError | unknown;
   lastUpdated: number;
-};
+}
+
+export interface QueryConfig {
+  cache: QueryCache;
+  queryKey: QueryKey;
+  queryHash: string;
+  options?: QueryOptions;
+  defaultOptions?: QueryOptions;
+}
 
 export class Query {
   cache: QueryCache;
-  queryKey: string[];
+  queryKey: QueryKey;
   queryHash: string;
   options: QueryOptions;
-  observers: QueryObserver[] = [];
+  observers: QueryObserver[];
   state: QueryState;
   promise: Promise<unknown> | null = null;
 
   gcTimeout?: ReturnType<typeof setTimeout>;
 
-  constructor(options: QueryOptions & { cache: QueryCache }) {
+  constructor(config: QueryConfig) {
     this.state = {
       data: undefined,
       error: undefined,
@@ -32,11 +40,14 @@ export class Query {
       lastUpdated: 0,
     };
 
-    this.options = options;
-
-    this.queryKey = options.queryKey;
-    this.queryHash = options.queryHash;
-    this.cache = options.cache;
+    this.observers = [];
+    this.cache = config.cache;
+    this.queryHash = config.queryHash;
+    this.queryKey = config.queryKey;
+    this.options = {
+      ...config.defaultOptions,
+      ...config.options,
+    };
   }
 
   subscribe = (observer: QueryObserver) => {
@@ -77,6 +88,10 @@ export class Query {
         this.setState((old) => ({ ...old, isFetching: true, error: undefined }));
 
         try {
+          if (!this.options.queryFn) {
+            throw new Error(`Missing queryFn: '${this.options.queryHash}'`);
+          }
+
           const data = await this.options.queryFn();
 
           this.setState((old) => ({ ...old, status: "success", data }));

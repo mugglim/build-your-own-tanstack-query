@@ -10,8 +10,6 @@ const usePostListQuery = () => {
 
       return data.slice(0, 5);
     },
-    staleTime: 3_000,
-    gcTime: 5_000,
   });
 };
 

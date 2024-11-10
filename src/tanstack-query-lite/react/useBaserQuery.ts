@@ -1,22 +1,16 @@
 import { useQueryClient } from "./QueryClientProvider";
 import { QueryClient } from "./../core/QueryClient";
 import QueryObserver from "../core/QueryObserver";
-import { QueryOptions } from "./../core/types";
 import { useCallback, useState, useSyncExternalStore } from "react";
+import { UseBaseQueryOptions } from "./types";
 
-const useBaseQuery = (options: QueryOptions, Observer: typeof QueryObserver, queryClient?: QueryClient) => {
+const useBaseQuery = (options: UseBaseQueryOptions, Observer: typeof QueryObserver, queryClient?: QueryClient) => {
   const client = useQueryClient(queryClient);
 
   const [observer] = useState(() => {
-    const { queryKey, queryFn, staleTime, gcTime = 5 * 60 * 1000 } = options;
+    const defaultOptions = client.defaultQueryOptions(options);
 
-    return new Observer(client, {
-      queryKey,
-      queryHash: JSON.stringify(queryKey),
-      queryFn,
-      staleTime,
-      gcTime,
-    });
+    return new Observer(client, defaultOptions);
   });
 
   useSyncExternalStore(

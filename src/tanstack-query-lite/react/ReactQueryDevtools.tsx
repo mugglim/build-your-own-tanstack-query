@@ -16,12 +16,14 @@ const ReactQueryDevtools = () => {
   return (
     <div className="fixed w-full bottom-0 overflow-scroll bg-black text-white divide-solid divide-y-2 divide-gray-800">
       {sortedQueries.map((query) => {
-        const { queryKey, queryHash, state, observers } = query;
+        const { queryKey, queryHash, state, observers, options } = query;
         const { isFetching, status } = state;
+
+        const { staleTime, gcTime } = options;
 
         return (
           <div key={queryHash} className="p-2">
-            {JSON.stringify(queryKey, null, 2)} -{" "}
+            {JSON.stringify(queryKey, null, 2)}, {JSON.stringify({ staleTime, gcTime }, null, 2)} -{" "}
             <span className="font-bold">
               {(() => {
                 if (isFetching) {

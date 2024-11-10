@@ -1,5 +1,7 @@
-import { QueryOptions } from "./types";
+import { QueryClient } from "./QueryClient";
+import { QueryOptions, WithRequired } from "./types";
 import { Query } from "./Query";
+import { hashKey } from "./util";
 
 type Listener = () => void;
 
@@ -20,16 +22,33 @@ class QueryCache {
     this.listeners = new Set<Listener>();
   }
 
-  getQuery = (options: QueryOptions) => {
-    const queryHash = JSON.stringify(options.queryKey);
-    let query = this.queries.get(queryHash);
+  build(client: QueryClient, options: WithRequired<QueryOptions, "queryKey">) {
+    const queryKey = options.queryKey;
+    const queryHash = hashKey(queryKey);
+
+    let query = this.get(queryHash);
 
     if (!query) {
-      query = new Query({ cache: this, ...options });
-      this.queries.set(query.queryHash, query);
+      query = new Query({
+        cache: this,
+        queryKey,
+        queryHash,
+        options: client.defaultQueryOptions(options),
+      });
+      this.add(query);
     }
 
     return query;
+  }
+
+  get = (queryHash: string) => {
+    return this.queries.get(queryHash);
+  };
+
+  getAll = () => {
+    const queries = this.queries.values();
+
+    return [...queries];
   };
 
   add = (query: Query) => {
@@ -37,6 +56,7 @@ class QueryCache {
       return;
     }
 
+    this.queries.set(query.queryHash, query);
     this.notify();
   };
 
@@ -54,12 +74,6 @@ class QueryCache {
 
   notify = () => {
     this.listeners.forEach((callback) => callback());
-  };
-
-  getAll = () => {
-    const queries = this.queries.values();
-
-    return [...queries];
   };
 
   onFocus = () => {
