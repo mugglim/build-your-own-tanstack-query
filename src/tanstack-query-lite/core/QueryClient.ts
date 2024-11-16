@@ -4,12 +4,12 @@ import { hashKey } from "./util";
 
 export type QueryClientConfig = {
   cache?: QueryCache;
-  defaultOptions?: DefaultOptions;
+  defaultOptions?: DefaultOptions<unknown>;
 };
 
 export class QueryClient {
   cache: QueryCache;
-  defaultOptions?: DefaultOptions;
+  defaultOptions?: DefaultOptions<unknown>;
 
   constructor(config: QueryClientConfig = {}) {
     this.cache = config.cache || new QueryCache();
@@ -20,7 +20,7 @@ export class QueryClient {
     return this.cache;
   };
 
-  defaultQueryOptions = (options: QueryObserverOptions): DefaultedQueryObserverOptions => {
+  defaultQueryOptions = <TQueryFnData>(options: QueryObserverOptions<TQueryFnData>) => {
     const mergedQueryOptions = {
       ...this.defaultOptions?.queires,
       ...options,
@@ -31,6 +31,6 @@ export class QueryClient {
       queryHash: mergedQueryOptions.queryHash || hashKey(mergedQueryOptions.queryKey),
     };
 
-    return defaultedQueryOptions;
+    return defaultedQueryOptions as DefaultedQueryObserverOptions<TQueryFnData>;
   };
 }

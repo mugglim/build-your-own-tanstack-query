@@ -1,13 +1,13 @@
 import axios from "axios";
 
 import useQuery from "../../tanstack-query-lite/react/useQuery";
+import { Post } from "../types/post";
 
 const usePostDetailQuery = ({ id }: { id: string }) => {
-  return useQuery({
-    queryKey: ["posts", id],
-    queryHash: JSON.stringify(["posts", id]),
+  return useQuery<Post>({
+    queryKey: ["post", id],
     queryFn: async () => {
-      const { data } = await axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`);
+      const { data } = await axios.get<Post>(`https://jsonplaceholder.typicode.com/posts/${id}`);
 
       return data;
     },

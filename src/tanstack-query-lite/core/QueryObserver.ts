@@ -1,11 +1,11 @@
 import { QueryClient } from "./QueryClient";
 import { QueryObserverOptions } from "./types";
 
-class QueryObserver {
+class QueryObserver<TQueryFnData> {
   client: QueryClient;
-  options: QueryObserverOptions;
+  options: QueryObserverOptions<TQueryFnData>;
 
-  constructor(client: QueryClient, options: QueryObserverOptions) {
+  constructor(client: QueryClient, options: QueryObserverOptions<TQueryFnData>) {
     this.client = client;
     this.options = options;
   }

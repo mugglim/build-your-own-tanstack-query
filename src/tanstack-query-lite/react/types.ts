@@ -1,7 +1,5 @@
 import { QueryObserverOptions } from "../core/types";
 
-// TODO: Change to interface
-export type UseBaseQueryOptions = QueryObserverOptions;
+export interface UseBaseQueryOptions<TQueryFnData> extends QueryObserverOptions<TQueryFnData> {}
 
-// TODO: Change to interface
-export type UseQueryOptions = UseBaseQueryOptions;
+export interface UseQueryOptions<TQueryFnData> extends UseBaseQueryOptions<TQueryFnData> {}

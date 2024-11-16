@@ -3,8 +3,13 @@ import { QueryClient } from "./../core/QueryClient";
 import QueryObserver from "../core/QueryObserver";
 import { useCallback, useState, useSyncExternalStore } from "react";
 import { UseBaseQueryOptions } from "./types";
+import { QueryState } from "../core/Query";
 
-const useBaseQuery = (options: UseBaseQueryOptions, Observer: typeof QueryObserver, queryClient?: QueryClient) => {
+const useBaseQuery = <TQueryFnData>(
+  options: UseBaseQueryOptions<TQueryFnData>,
+  Observer: typeof QueryObserver<TQueryFnData>,
+  queryClient?: QueryClient
+): QueryState<TQueryFnData> => {
   const client = useQueryClient(queryClient);
 
   const [observer] = useState(() => {

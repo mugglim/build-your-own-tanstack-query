@@ -22,20 +22,19 @@ export type OmitKeyof<
 
 export type QueryKey = ReadonlyArray<unknown>;
 
-export interface QueryOptions {
+export interface QueryOptions<TQueryFnData> {
   queryKey?: QueryKey;
   queryHash?: string;
   staleTime?: number;
   gcTime?: number;
-  queryFn?: () => Promise<unknown>;
+  queryFn?: () => Promise<TQueryFnData>;
 }
 
-// TODO: Change to interface
-export type QueryObserverOptions = WithRequired<QueryOptions, "queryKey">;
+export interface QueryObserverOptions<TQueryFnData> extends WithRequired<QueryOptions<TQueryFnData>, "queryKey"> {}
 
-export interface DefaultOptions {
-  queires?: OmitKeyof<QueryObserverOptions, "queryKey">;
+export interface DefaultOptions<TQueryFnData> {
+  queires?: OmitKeyof<QueryObserverOptions<TQueryFnData>, "queryKey">;
 }
 
-// TODO: Change to interface
-export type DefaultedQueryObserverOptions = WithRequired<QueryObserverOptions, "queryHash">;
+export interface DefaultedQueryObserverOptions<TQueryFnData>
+  extends WithRequired<QueryObserverOptions<TQueryFnData>, "queryHash"> {}

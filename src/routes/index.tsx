@@ -10,7 +10,6 @@ const Index = () => {
 
   return (
     <ul>
-      {/* @ts-ignore */}
       {postListData.map((post) => {
         const { id, title } = post;
 

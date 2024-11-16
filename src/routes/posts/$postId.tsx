@@ -10,7 +10,6 @@ const PostDetail = () => {
     return <div>loading...</div>;
   }
 
-  // @ts-ignore
   return <>{postDetailData.title}</>;
 };
 

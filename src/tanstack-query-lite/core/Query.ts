@@ -12,26 +12,26 @@ export interface QueryState<TData = unknown, TError = unknown> {
   lastUpdated: number;
 }
 
-export interface QueryConfig {
+export interface QueryConfig<TQueryFnData> {
   cache: QueryCache;
   queryKey: QueryKey;
   queryHash: string;
-  options?: QueryOptions;
-  defaultOptions?: QueryOptions;
+  options?: QueryOptions<TQueryFnData>;
+  defaultOptions?: QueryOptions<TQueryFnData>;
 }
 
-export class Query {
+export class Query<TQueryFnData = unknown> {
   cache: QueryCache;
   queryKey: QueryKey;
   queryHash: string;
-  options: QueryOptions;
-  observers: QueryObserver[];
-  state: QueryState;
+  options: QueryOptions<TQueryFnData>;
+  observers: QueryObserver<TQueryFnData>[];
+  state: QueryState<TQueryFnData>;
   promise: Promise<unknown> | null = null;
 
   gcTimeout?: ReturnType<typeof setTimeout>;
 
-  constructor(config: QueryConfig) {
+  constructor(config: QueryConfig<TQueryFnData>) {
     this.state = {
       data: undefined,
       error: undefined,
@@ -50,7 +50,7 @@ export class Query {
     };
   }
 
-  subscribe = (observer: QueryObserver) => {
+  subscribe = (observer: QueryObserver<TQueryFnData>) => {
     this.observers.push(observer);
     this.unscheduleGC();
 
@@ -75,7 +75,7 @@ export class Query {
     clearTimeout(this.gcTimeout);
   };
 
-  setState = (updater: (state: QueryState) => QueryState) => {
+  setState = (updater: (state: QueryState<TQueryFnData>) => QueryState<TQueryFnData>) => {
     this.state = updater(this.state);
     this.observers.forEach((subscriber) => subscriber.notify());
 

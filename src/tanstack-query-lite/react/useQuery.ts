@@ -4,8 +4,8 @@ import QueryObserver from "../core/QueryObserver";
 import useBaseQuery from "./useBaserQuery";
 import { UseQueryOptions } from "./types";
 
-const useQuery = (options: UseQueryOptions, queryClient?: QueryClient) => {
-  return useBaseQuery(options, QueryObserver, queryClient);
+const useQuery = <TQueryFnData>(options: UseQueryOptions<TQueryFnData>, queryClient?: QueryClient) => {
+  return useBaseQuery<TQueryFnData>(options, QueryObserver, queryClient);
 };
 
 export default useQuery;

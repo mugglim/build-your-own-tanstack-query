@@ -22,11 +22,11 @@ class QueryCache {
     this.listeners = new Set<Listener>();
   }
 
-  build(client: QueryClient, options: WithRequired<QueryOptions, "queryKey">) {
+  build<TQueryFnData>(client: QueryClient, options: WithRequired<QueryOptions<TQueryFnData>, "queryKey">) {
     const queryKey = options.queryKey;
     const queryHash = hashKey(queryKey);
 
-    let query = this.get(queryHash);
+    let query = this.get<TQueryFnData>(queryHash);
 
     if (!query) {
       query = new Query({
@@ -41,8 +41,8 @@ class QueryCache {
     return query;
   }
 
-  get = (queryHash: string) => {
-    return this.queries.get(queryHash);
+  get = <TQueryFnData>(queryHash: string) => {
+    return this.queries.get(queryHash) as Query<TQueryFnData> | undefined;
   };
 
   getAll = () => {
@@ -51,7 +51,7 @@ class QueryCache {
     return [...queries];
   };
 
-  add = (query: Query) => {
+  add = (query: Query<any>) => {
     if (this.queries.has(query.queryHash)) {
       return;
     }
@@ -60,7 +60,7 @@ class QueryCache {
     this.notify();
   };
 
-  remove = (query: Query) => {
+  remove = (query: Query<any>) => {
     this.queries.delete(query.queryHash);
   };
 
