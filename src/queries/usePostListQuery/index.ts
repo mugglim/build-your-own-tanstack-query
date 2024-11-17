@@ -1,6 +1,7 @@
 import axios from "axios";
 
-import useQuery from "../../tanstack-query-lite/react/useQuery";
+import useQuery from "tanstack-query-lite/react/useQuery";
+
 import { Post } from "./../types/post";
 
 const usePostListQuery = () => {

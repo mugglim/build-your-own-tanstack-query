@@ -2,11 +2,11 @@ import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
 
-import router from "./router.js";
+import { QueryClient } from "tanstack-query-lite/core/QueryClient.js";
+import { QueryClientProvider } from "tanstack-query-lite/react/QueryClientProvider.js";
+import ReactQueryDevtools from "tanstack-query-lite/react/ReactQueryDevtools.js";
 
-import { QueryClient } from "./tanstack-query-lite/core/QueryClient";
-import { QueryClientProvider } from "./tanstack-query-lite/react/QueryClientProvider";
-import ReactQueryDevtools from "./tanstack-query-lite/react/ReactQueryDevtools";
+import router from "./router";
 
 import "./index.css";
 

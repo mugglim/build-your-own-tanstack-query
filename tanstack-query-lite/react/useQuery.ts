@@ -1,4 +1,4 @@
-import { QueryClient } from "./../core/QueryClient";
+import { QueryClient } from "../core/QueryClient";
 import QueryObserver from "../core/QueryObserver";
 
 import useBaseQuery from "./useBaserQuery";

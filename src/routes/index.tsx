@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import usePostListQuery from "../queries/usePostListQuery";
+
+import usePostListQuery from "~/queries/usePostListQuery";
 
 const Index = () => {
   const { data: postListData } = usePostListQuery();

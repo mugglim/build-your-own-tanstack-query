@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import usePostDetailQuery from "../../queries/usePostDetailQuery";
+
+import usePostDetailQuery from "~/queries/usePostDetailQuery";
 
 const PostDetail = () => {
   const { postId } = Route.useParams();
