@@ -31,8 +31,12 @@ class QueryObserver<TQueryFnData> {
   fetch = () => {
     const query = this.getQuery();
 
-    const { staleTime = 0 } = this.options;
+    const { staleTime } = this.options;
     const { lastUpdated } = query.state;
+
+    if (typeof staleTime !== "number") {
+      return;
+    }
 
     const needsToFetch = !lastUpdated || Date.now() - lastUpdated > staleTime;
 
