@@ -1,7 +1,6 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
-
 import { QueryClient } from "tanstack-query-lite/core/QueryClient.js";
 import { QueryClientProvider } from "tanstack-query-lite/react/QueryClientProvider.js";
 import ReactQueryDevtools from "tanstack-query-lite/react/ReactQueryDevtools.js";

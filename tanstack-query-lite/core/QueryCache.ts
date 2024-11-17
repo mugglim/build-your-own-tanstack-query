@@ -51,6 +51,7 @@ class QueryCache {
     return [...queries];
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   add = (query: Query<any>) => {
     if (this.queries.has(query.queryHash)) {
       return;
@@ -60,6 +61,7 @@ class QueryCache {
     this.notify();
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   remove = (query: Query<any>) => {
     this.queries.delete(query.queryHash);
   };
