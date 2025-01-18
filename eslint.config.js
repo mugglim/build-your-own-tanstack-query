@@ -9,15 +9,15 @@ export default tseslint.config(
   { ignores: ["dist"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
-    files: ["**/*.{ts,tsx}"],
+    files: ["**/*.{ts,tsx}", "**/*.{js,jsx}"],
     languageOptions: {
       ecmaVersion: 2020,
-      globals: globals.browser,
+      globals: globals.browser
     },
     plugins: {
       "react-hooks": reactHooks,
       "react-refresh": reactRefresh,
-      import: pluginImport,
+      import: pluginImport
     },
     rules: {
       ...reactHooks.configs.recommended.rules,
@@ -26,9 +26,9 @@ export default tseslint.config(
       "import/order": [
         "error",
         {
-          groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"],
-        },
-      ],
-    },
+          groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object", "type"]
+        }
+      ]
+    }
   }
 );

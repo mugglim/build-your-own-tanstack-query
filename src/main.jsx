@@ -1,9 +1,9 @@
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "@tanstack/react-router";
-import { QueryClient } from "tanstack-query-lite/core/QueryClient.js";
-import { QueryClientProvider } from "tanstack-query-lite/react/QueryClientProvider.js";
-import ReactQueryDevtools from "tanstack-query-lite/react/ReactQueryDevtools.js";
+import { QueryClient } from "tanstack-query-lite/core/QueryClient";
+import { QueryClientProvider } from "tanstack-query-lite/react/QueryClientProvider";
+import ReactQueryDevtools from "tanstack-query-lite/react/ReactQueryDevtools";
 
 import router from "./router";
 
@@ -13,12 +13,12 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queires: {
       staleTime: 0,
-      gcTime: 1_000 * 60,
-    },
-  },
+      gcTime: 1_000 * 60
+    }
+  }
 });
 
-const rootElement = document.getElementById("root")!;
+const rootElement = document.getElementById("root");
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);

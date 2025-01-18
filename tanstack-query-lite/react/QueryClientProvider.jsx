@@ -1,9 +1,8 @@
-import { createContext, ReactNode, useContext, useEffect } from "react";
-import { QueryClient } from "../core/QueryClient";
+import { createContext, useContext, useEffect } from "react";
 
-export const QueryClientContext = createContext<QueryClient | null>(null);
+export const QueryClientContext = createContext(null);
 
-export const useQueryClient = (queryClient?: QueryClient) => {
+export const useQueryClient = (queryClient) => {
   const client = useContext(QueryClientContext);
 
   if (queryClient) {
@@ -17,7 +16,7 @@ export const useQueryClient = (queryClient?: QueryClient) => {
   return client;
 };
 
-export const QueryClientProvider = ({ children, client }: { children: ReactNode; client: QueryClient }) => {
+export const QueryClientProvider = ({ children, client }) => {
   useEffect(() => {
     const cache = client.getQueryCache();
 
@@ -25,11 +24,11 @@ export const QueryClientProvider = ({ children, client }: { children: ReactNode;
       cache.onFocus();
     };
 
-    window.addEventListener("visibilityhange", onFocus, false);
+    window.addEventListener("visibilitychange", onFocus, false);
     window.addEventListener("focus", onFocus, false);
 
     return () => {
-      window.addEventListener("visibilityhange", onFocus, false);
+      window.addEventListener("visibilitychange", onFocus, false);
       window.addEventListener("focus", onFocus, false);
     };
   }, [client]);
