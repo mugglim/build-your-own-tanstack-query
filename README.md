@@ -26,9 +26,11 @@ npm run dev
 
 **Demo**
 
-<video width="400" height="200" controls>
-  <source src="./docs/demo.mov" type="video/mp4">
-</video>
+
+https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
+
+
+
 
 ## 구조
 
