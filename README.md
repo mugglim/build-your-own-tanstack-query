@@ -262,7 +262,7 @@ class Query {
 
           const data = await this.options.queryFn();
 
-          this.setState((old) => ({ ...old, status: "success", data }));
+          this.setState((old) => ({ ...old, status: "success", data, lastUpdated: Date.now() }));
         } catch (error) {
           this.setState((old) => ({ ...old, status: "error", error }));
         } finally {
