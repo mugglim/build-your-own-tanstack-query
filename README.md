@@ -16,6 +16,8 @@ TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트
 
 ## **Play Locally**
 
+**Demo**
+
 **Install package**
 
 ```
@@ -584,11 +586,18 @@ Query는 서버 상태가 변경될 때 QueryCache의 notify 메소드를 호출
 
 ```jsx
 class Query {
-  // ...
+  scheduleGcTimeout = () => {
+    // ...
+    this.gcTimeout = setTimeout(() => {
+      // gc 시점에 QueryCache에게 이벤트를 발행합니다
+      this.cache.notify();
+    }, gcTime);
+  };
+
   setState() {
     // ...
 
-    // QueryCache에게 이벤트를 발행합니다.
+    // 상태 변경되면 QueryCache에게 이벤트를 발행합니다.
     this.cache.notify();
   }
 }

@@ -33,6 +33,7 @@ export class Query {
 
     this.gcTimeout = setTimeout(() => {
       this.cache.remove(this);
+      this.cache.notify();
     }, gcTime);
   };
 
