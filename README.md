@@ -130,7 +130,7 @@ class QueryCache {
   };
 
   build(client, options) {
-    const queryKey = options.queryKey;****
+    const queryKey = options.queryKey;
     const queryHash = hashKey(queryKey);
 
     let query = this.get(queryHash);
