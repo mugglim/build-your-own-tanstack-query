@@ -22,7 +22,7 @@ export class Query {
       error: undefined,
       status: "pending",
       isFetching: true,
-      lastUpdated: 0
+      lastUpdated: undefined
     };
 
     this.scheduleGcTimeout();
