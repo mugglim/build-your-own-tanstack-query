@@ -4,19 +4,17 @@
 
 TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트입니다. [Tanner Linsley](https://github.com/tannerlinsley)의 [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) 발표의 내용을 참고하여 작성되었습니다.
 
-최신 코드를 반영하기 위해 TanStack Query v5를 참고했습니다.
+최신 코드를 반영하기 위해 TanStack Query v5의 코드를 참고했습니다.
 
 > [!WARNING]
 >
 > - TanStack Query 및 Let's Build React Query in 150 Lines of Code 발표의 코드와 완벽히 일치하지 않을 수 있습니다.
 
-## TOC
+## 목차
 
 - [Step1: core 로직 구현하기](#step1-core-로직-구현하기)
 
-## **Play Locally**
-
-**Demo**
+## 실행 방법
 
 **Install package**
 
@@ -26,9 +24,15 @@ npm install
 
 **Run development server**
 
-```jsx
+```
 npm run dev
 ```
+
+**Demo**
+
+<video width="400" height="200" controls>
+  <source src="./docs/demo.mov" type="video/mp4">
+</video>
 
 ## Architecture
 
