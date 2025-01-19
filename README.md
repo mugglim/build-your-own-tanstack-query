@@ -10,7 +10,16 @@ TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트
 >
 > - TanStack Query 코드와 완벽히 일치하지 않을 수 있습니다.
 
-## 실행 방법
+## 목차
+
+- [로컬 환경 실행 방법](#로컬-환경-실행-방법)
+- [구조](#구조)
+- [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
+- [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
+- [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
+- [참고 자료](#참고-자료)
+
+## 로컬 환경 실행 방법
 
 **Install package**
 
@@ -27,16 +36,6 @@ npm run dev
 **Demo**
 
 https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
-
----
-
-## 목차
-
-- [구조](#구조)
-- [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
-- [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
-- [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
-- [참고 자료](#참고-자료)
 
 ## 구조
 
