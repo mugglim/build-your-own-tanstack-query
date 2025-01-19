@@ -1,6 +1,6 @@
 # Build Your Own TanStack Query and useQuery
 
-## Intro
+## 소개
 
 TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트입니다. [Tanner Linsley](https://github.com/tannerlinsley)의 [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) 발표의 내용을 참고하여 작성되었습니다.
 
@@ -9,10 +9,6 @@ TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트
 > [!WARNING]
 >
 > - TanStack Query 및 Let's Build React Query in 150 Lines of Code 발표의 코드와 완벽히 일치하지 않을 수 있습니다.
-
-## 목차
-
-- [Step1: core 로직 구현하기](#step1-core-로직-구현하기)
 
 ## 실행 방법
 
@@ -34,7 +30,7 @@ npm run dev
   <source src="./docs/demo.mov" type="video/mp4">
 </video>
 
-## Architecture
+## 구조
 
 > [!INFO]
 > TanStack Query를 재작성한 코드를 ”tanstack-query-lite”로 부르겠습니다.
@@ -46,7 +42,14 @@ npm run dev
 
 ---
 
-## Step1: core 로직 구현하기
+## 목차
+
+- [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
+- [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
+- [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
+- [참고 자료](#참고-자료)
+
+## Step 1: core 로직 구현하기
 
 core 로직은 외부 환경에 의존되지 않는 코드입니다. React, Vue, Svelte 라이브러리의 생명주기에 적절히 core 로직을 적용하면, 동일한 기능을 제공할 수 있습니다.
 
@@ -339,7 +342,9 @@ class QueryObserver {
 }
 ```
 
-## Step2: React에서 core 로직 적용하기
+<kbd>[목차로 이동하기](#목차)</kbd>
+
+## Step 2: React에서 core 로직 적용하기
 
 React에서 core 로직을 사용하는 경우, Query 객체의 상태가 변경될 때 컴포넌트의 다시 렌더링을 발생시켜야 합니다. 아쉽게도 core 로직은 React로 작성된 코드가 아닙니다. Query 객체의 상태가 변경되더라도 다시 렌더링이 발생하지는 않습니다.
 
@@ -468,7 +473,9 @@ const useQuery = (options, queryClient) => {
 };
 ```
 
-## Step3: 추가적인 기능 개발해보기
+<kbd>[목차로 이동하기](#목차)</kbd>
+
+## Step 3: 추가 기능 개발해보기
 
 ### 1. focus 상태가 변경될 때 refetch를 발생시키기
 
@@ -681,9 +688,9 @@ const App = ({ children }) => {
 };
 ```
 
----
-
-## Reference
+## 참고 자료
 
 - [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0)
 - [Inside React Query](https://tkdodo.eu/blog/inside-react-query)
+
+<kbd>[목차로 이동하기](#목차)</kbd>
