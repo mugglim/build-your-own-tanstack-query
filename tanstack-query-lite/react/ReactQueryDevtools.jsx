@@ -1,5 +1,5 @@
-import { useEffect, useReducer } from 'react';
-import { useQueryClient } from './QueryClientProvider';
+import { useEffect, useReducer } from "react";
+import { useQueryClient } from "./QueryClientProvider";
 
 const ReactQueryDevtools = () => {
   const queryClient = useQueryClient();
@@ -8,7 +8,7 @@ const ReactQueryDevtools = () => {
 
   useEffect(() => {
     return queryClient.cache.subscribe(rerender);
-  });
+  }, [queryClient]);
 
   const queries = queryClient.getQueryCache().getAll();
   const sortedQueries = [...queries].sort((a, b) => (a.queryHash > b.queryHash ? 1 : -1));
@@ -23,7 +23,7 @@ const ReactQueryDevtools = () => {
 
         return (
           <div key={queryHash} className="p-2">
-            {JSON.stringify(queryKey, null, 2)}, {JSON.stringify({ staleTime, gcTime }, null, 2)} -{' '}
+            {JSON.stringify(queryKey, null, 2)}, {JSON.stringify({ staleTime, gcTime }, null, 2)} -{" "}
             <span className="font-bold">
               {(() => {
                 if (isFetching) {
@@ -34,11 +34,11 @@ const ReactQueryDevtools = () => {
                   return <span className="text-gray-500">inactive</span>;
                 }
 
-                if (status === 'success') {
+                if (status === "success") {
                   return <span className="text-green-500">success</span>;
                 }
 
-                if (status === 'error') {
+                if (status === "error") {
                   return <span className="text-red-500">error</span>;
                 }
 
