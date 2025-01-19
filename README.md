@@ -8,7 +8,7 @@ TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트
 
 > [!WARNING]
 >
-> - TanStack Query 및 Let's Build React Query in 150 Lines of Code 발표의 코드와 완벽히 일치하지 않을 수 있습니다.
+> - TanStack Query 코드와 완벽히 일치하지 않을 수 있습니다.
 
 ## 실행 방법
 
@@ -28,6 +28,16 @@ npm run dev
 
 https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
 
+---
+
+## 목차
+
+- [구조](#구조)
+- [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
+- [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
+- [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
+- [참고 자료](#참고-자료)
+
 ## 구조
 
 > [!NOTE]
@@ -38,26 +48,19 @@ https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
 - **tanstack-query-lite/core**: 외부 환경에 의존되지 않는 코드입니다. QueryClient, QueryCache, Query, QueryObserver 객체가 포함됩니다.
 - **tanstack-query-lite/react:** React 라이브러리에 의존되는 코드입니다. 내부적으로 core 폴더의 코드를 의존하고 있습니다.
 
----
-
-## 목차
-
-- [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
-- [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
-- [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
-- [참고 자료](#참고-자료)
-
 ## Step 1: core 로직 구현하기
 
-core 로직은 외부 환경에 의존되지 않는 코드입니다. React, Vue, Svelte 라이브러리의 생명주기에 적절히 core 로직을 적용하면, 동일한 기능을 제공할 수 있습니다.
+core 로직은 외부 환경에 의존되지 않는 코드입니다. React, Vue, Svelte 라이브러리의 생명주기에 맞춰 core 로직을 적용하면 core 로직의 기능을 제공할 수 있습니다.
 
 core 코드는 QueryClient, QueryCache, Query, QueryObserver 4가지 객체로 구성되어 있습니다.
 
 ### QueryClient
 
-QueryClient는 QueryCache를 의존하며, 데이터 패칭 및 캐시 무효화와 같은 기능을 제공합니다. 실질적인 기능은 대부분 참조하고 있는 객체에서 구현되어 있습니다. 예를 들어 데이터 패칭은 Query 객체가 수행합니다.
+QueryClient는 QueryCache를 의존하며, 데이터 패칭 및 캐시 무효화와 같은 기능을 제공합니다. 주요 기능은 참조하고 있는 객체에서 구현되어 있습니다. 예를 들어 데이터 패칭은 Query 객체에서 구현되어 있습니다.
 
-defaultOptions 값을 기반으로 Query의 기본 옵션을 전역으로 설정할 수 있습니다.
+> defaultOptions 값은 무엇인가요?
+
+Query의 기본 옵션을 전역으로 설정하는 값 입니다.
 
 ```jsx
 class QueryClient {
@@ -107,7 +110,9 @@ QueryCache는 메모리에 Query 객체를 캐싱하는 역할을 담당합니�
 - **key**: Query 객체의 queryKey 값을 기반으로 해싱된 값을 사용합니다. 해싱함수는 JSON.stringify 기반의 [hashKey](./tanstack-query-lite/core/util.js#L2) 함수를 사용합니다.
 - **value**: Query 객체
 
-QueryCache는 build 메소드를 기반으로 Query 객체를 추가합니다. 만약 queryKey 값에 해당하는 Query가 이미 존재한다면, 캐싱되어 있는 Query 객체를 반환하여 불필요한 Query 객체의 인스턴스 생성을 방지합니다.
+> QueryCache 어떤 메소드로 Query를 추가하나요?
+
+build 메소드를 기반으로 Query 객체를 추가합니다. 만약 queryKey 값에 해당하는 Query가 이미 존재한다면, 캐싱되어 있는 Query 객체를 반환하여 불필요한 Query 객체의 인스턴스 생성을 방지합니다.
 
 ```jsx
 class QueryCache {
@@ -155,7 +160,7 @@ class QueryCache {
 
 Query 객체는 서버 상태를 관리합니다. 서버 상태 관리는 서버 상태를 저장하고, 서버 상태를 조회하는 역할을 의미합니다. 옵저버 패턴으로 구독을 허용하고 있으며, 서버 상태가 변경될 때 구독자들에게 이벤트를 발행합니다.
 
-**서버 상태 조회 로직은 어떻게 동작할까요?**
+> 서버 상태 조회 로직은 어떻게 동작하나요?
 
 fetch 메소드를 제공하여 서버 상태를 조회합니다. 서버 상태 조회 로직은 Query 객체 생성 시점에 전달되는 queryFn 함수를 사용합니다. fetch 메소드가 호출될 때 마다 서버 상태 요청이 발생하지 않도록, Promise 객체를 promise 멤버 변수로 관리합니다. 요청의 상태에 promise 멤버 변수를 상태를 정리해 봅시다.
 
@@ -163,7 +168,7 @@ fetch 메소드를 제공하여 서버 상태를 조회합니다. 서버 상태 
 - 요청 중: promise 멤버 변수의 값을 반환합니다. (Promise 객체를 새롭게 생성하지 않습니다.)
 - 요청 완료: promise 멤버 변수를 null로 초기화합니다.
 
-**staleTime은 어떻게 동작하는가?**
+> staleTime은 어떻게 동작하나요?
 
 서버 상태가 마지막으로 변경된 시점을 timestamp 기반의 lastUpdated 멤버 변수로 저장하고 있습니다. fetch 메소드가 실행되기 전 `Date.now() - lastUpdated` 값과 staleTime를 비교하여, fetch 메소드 실행 여부를 판단합니다.
 
@@ -176,7 +181,7 @@ if (needsToFetch) {
 }
 ```
 
-**gcTime은 어떻게 동작하는가?**
+> gcTime은 어떻게 동작하나요?
 
 객체가 생성되는 시점에 [setTimeout](https://developer.mozilla.org/ko/docs/Web/API/Window/setTimeout)를 사용하여 scheduleGcTimeout 메소드를 통해 gc를 관리합니다. gcTime timeout이 호출되면 QueryCache에게 제거를 요청합니다.
 
@@ -374,18 +379,14 @@ const useQuery = () => {
 
 Query 객체의 상태가 변경되고 다시 렌더링이 발생하는 흐름을 정리해 보면 아래와 같습니다.
 
-1. QueryObserver를 생성한다.
-   1. Query 객체에 생성한다.
-   2. Query 객체에 구독한다. 구독할 때 notify 멤버 변수가 useSyncExternalStore의 onStoreChange로 할당된다.
-   3. Query 객체에게 fetch 메소드를 요청한다. (서버 상태 조회)
-2. Query에서 fetch 함수가 종료된 후 서버 상태를 변경한다.
-3. Query는 구독되어 있는 QueryObserver의 notify를 실행한다.
-   1. useSyncExternalStore의 onStoreChange가 실행된다.
-   2. QueryObserver는 getResult 함수를 통해 최신 상태를 반환하고 다시 렌더링을 발생시킨다.
-
----
-
-QueryObserver 생성 및 useSyncExternalStore 처리 로직은 useBaseQuery에 작성되어 있으며, useQuery는 useBaseQuery의 실행값을 반환합니다.
+1. QueryObserver를 생성합니다.
+   - (1-1) Query 객체를 생성합니다. (캐시된 Query 값이 있는 경우 생략합니다.)
+   - (1-2) Query 객체에 QueryObserver를 구독합니다. 구독할 때 notify 멤버 변수가 useSyncExternalStore의 onStoreChange로 할당됩니다.
+   - (1-3) Query 객체에게 fetch 메소드를 요청합니다. (staleTime에 따라서 fetch 메소드가 실행되지 않을 수 있습니다.)
+2. Query에서 fetch 함수가 종료된 후 서버 상태를 변경합니다.
+3. Query는 구독되어 있는 QueryObserver의 notify를 실행합니다.
+   - (3-1) useSyncExternalStore의 onStoreChange가 실행합니다.
+   - (3-2) QueryObserver는 getResult 함수를 통해 최신 상태를 반환하고 다시 렌더링을 발생시킵니다.
 
 이제 core 로직을 React에서 활용할 수 있는 방법을 조금 더 알아보려고 합니다.
 
@@ -436,6 +437,8 @@ const App = ({ children }) => {
 ### useQuery
 
 useQuery는 QueryObserver 객체를 이용하여 서버 상태를 관리하는 커스텀 Hook입니다.
+
+QueryObserver 생성 및 useSyncExternalStore 처리 로직은 useBaseQuery에 작성되어 있습니다. useQuery는 단순히 useBaseQuery의 실행값을 반환합니다.
 
 ```jsx
 const useBaseQuery = (options, Observer, queryClient) => {
@@ -671,7 +674,7 @@ const ReactQueryDevtools = () => {
 };
 ```
 
-**src/main.jsx**
+**_src/main.jsx_**
 
 루트 컴포넌트에 ReactQueryDevtools를 렌더링하면, DevTools가 동작하는 것을 확인하실 수 있습니다.
 
