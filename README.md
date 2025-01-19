@@ -26,15 +26,11 @@ npm run dev
 
 **Demo**
 
-
 https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
-
-
-
 
 ## 구조
 
-> [!INFO]
+> [!NOTE]
 > TanStack Query를 재작성한 코드를 ”tanstack-query-lite”로 부르겠습니다.
 
 코드는 2가지 폴더의 코드로 분리되어 있습니다.
