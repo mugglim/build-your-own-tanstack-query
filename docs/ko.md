@@ -1,10 +1,5 @@
 # Build Your Own TanStack Query and useQuery
 
-<center>
-  <a href="./docs/en.md">English</a> | 
-  <a href="./docs/ko.md">한국어</a>
- </center>
-
 ## 소개
 
 TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트입니다. [Tanner Linsley](https://github.com/tannerlinsley)의 [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) 발표의 내용을 참고하여 작성되었습니다.
