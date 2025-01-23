@@ -3,34 +3,34 @@
 > [!IMPORTANT]
 >
 > - **This content has been summarized by AI.**
-> - **If you find any awkward phrasing, we would appreciate it if you could report it as an issue!**
+> - **If you find any awkward wording, we would appreciate it if you could report it as an issue!**
 
 ## Introduction
 
-We are going to rewrite TanStack Query and useQuery from scratch, based on the concepts and code presented in [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
+We're going to rewrite TanStack Query and useQuery from scratch. We'll be using the ideas and code from [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
 
 > [!WARNING]
 >
-> - It may not match the TanStack Query code perfectly.
+> - It may not match the TanStack Query exactly.
 
 ## TOC
 
 - [Play Locally](#play-locally)
 - [Architecture](#architecture)
 - [Step 1: Core Implementation](#step-1-core-implementation)
-- [Step 2: Integrating With React](#step-2-integrating-with-react)
+- [Step 2: Integration With React](#step-2-integration-with-react)
 - [Step 3: Additional Features](#step-3-additional-features)
 - [Reference](#reference)
 
 ## Play Locally
 
-**Install package**
+Install package
 
 ```
 npm install
 ```
 
-**Run development server**
+Run development server
 
 ```
 npm run dev
@@ -43,26 +43,18 @@ https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
 ## Architecture
 
 > [!NOTE]
-> The rewritten version of TanStack Query will be referred to as 'tanstack-query-lite'.
+> We'll call the rewritten code tanstack-query-lite.
 
-The code is separated into two folders of code.
-
-- **tanstack-query-lite/core**: General code which can be used any library. They include QueryClient, QueryCache, Query, and QueryObserver objects.
-- **tanstack-query-lite/react:** Code which depends on the React library. They depends on core code.
+- **tanstack-query-lite/core**: General code that can be used by any library. It includes the QueryClient, QueryCache, Query, and QueryObserver.
+- **tanstack-query-lite/react:**: Code that depends on the React. You can use core code in React.
 
 ## Step 1: Core Implementation
 
-Core is the code that doesn't depend on any library. You can use core code in React, Vue, and Svelte libraries.
-
-They include QueryClient, QueryCache, Query, and QueryObserver objects.
+Core doesn't depend on any library. It includes the QueryClient, the QueryCache, the Query and the QueryObserver.
 
 ### QueryClient
 
-The QueryClient depend on the QueryCache and provides functionality such as data fetching and cache invalidation. The main functionality is implemented in the objects it references. For example, data fetching is implemented in the Query object.
-
-> What is the defaultOptions?
-
-It is default options for Query to be used globally.
+The QueryClient depends on the QueryCache. It provides methods to fetch data or invalidating the cache. For example, QueryClient calls Query to fetch data.
 
 ```jsx
 class QueryClient {
@@ -93,7 +85,11 @@ class QueryClient {
 }
 ```
 
-QueryClient object is created as shown below, the staleTime of the Query is set to Infinity by default.
+> What is the defaultOptions?
+
+The default options for Query are used globally.
+
+If you create the QueryClient below, the staleTime is set to `Infinity` by default.
 
 ```jsx
 const queryClient = new QueryClient({
@@ -107,14 +103,14 @@ const queryClient = new QueryClient({
 
 ### QueryCache
 
-The QueryCache cache Query objects in memory. It is based on a Map object and queryKey is used as keys.
+The QueryCache caches Query in memory. It is based on a Map object, and queryKey is used as the key.
 
 - key: The hashed value derived from the queryKey. The [hashKey](./tanstack-query-lite/core/util.js#L2) hash function uses JSON.stringify.
-- value: The Query object.
+- value: Query.
 
-> Which method does QueryCache use to add a Query?
+> What method does QueryCache use to add a Query?
 
-It uses the build method to add Query objects. If a query is cached, the cached Query object is returned to avoid creation of new instance.
+The `build` method. If a query is cached, the cached query object is returned to avoid creating a new instance.
 
 ```jsx
 class QueryCache {
@@ -160,19 +156,19 @@ class QueryCache {
 
 ### Query
 
-The Query object manages server state. Server state management involves storing and fetching server state. It supports the observer pattern, allowing subscribers to receive events whenever the server state changes.
+Query manages server state. Server state management involves storing and fetching server state. Query also supports the observer pattern. It allows subscribers to receive events whenever the server state changes.
 
 > How does the server state fetching logic work?
 
-The Query object provides a fetch method to fetch server state. The server state fetching logic uses the queryFn function, which is passed when Query object is created. To avoid repeated server state requests every time the fetch method is called, the promise member variable is used to manage the request's state. Below is a breakdown of how the promise member variable works during the request lifecycle:
+Query provides `fetch` method to fetch server state. It uses the queryFn of the Query. To avoid repeated requests, Query uses `promise` member variable. Here is a breakdown of how the promise works during the request.
 
-- **Request Initiated**: A Promise object, created based on the queryFn function, is assigned to the promise member variable.
-- **Request In Progress**: The value of the promise member variable is returned (a new Promise object is not created).
-- **Request Completed**: The promise member variable is reset to null.
+- **Request Initiated**: A Promise object, created based on the queryFn function, is assigned to the promisee.
+- **Request In Progress**: The value of the promise is returned (a new Promise object is not created).
+- **Request Completed**: The promise is reset to null.
 
 > How does staleTime work?
 
-The time when the server state was last updated is stored in the lastUpdated member variable as a timestamp. Before the fetch method executes, the value of `Date.now() - lastUpdated` is compared with staleTime. This comparison determines whether the fetch method should be executed.
+Query uses the `lastUpdated` member variable. Before the fetch method is executed, the value of `Date.now() - lastUpdated` is compared with staleTime. This comparison determines whether the fetch method should be executed.
 
 ```jsx
 const diffUpdatedAt = Date.now() - lastUpdated;
@@ -183,11 +179,11 @@ if (needsToFetch) {
 }
 ```
 
-> gcTime: How does it work?
+> How does gcTime work?
 
-At the time of Query object creation, garbage collection (GC) is managed via the scheduleGcTimeout method, which uses [setTimeOut](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout). When the gcTime timeout is triggered, the QueryCache is requested to remove the object.
+At the time of Query creation, garbage collection (GC) is managed via the `scheduleGcTimeout` method using [setTimeOut](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout). When the gcTime timeout is triggered, Query request to QueryCache to remove the object.
 
-Every time a subscription occurs, the timeout is reset using the clearGcTimeout method. If a subscriber unsubscribes and the subscriber list becomes empty, the scheduleGcTimeout method is executed again.
+Each time a subscription occurs, the timeout is reset using the `clearGcTimeout`method. If a subscriber unsubscribes and the subscriber list becomes empty, the scheduleGcTimeout method is executed again.
 
 ```jsx
 class Query {
@@ -289,9 +285,9 @@ class Query {
 
 ### QueryObserver
 
-QueryObserver is an object that subscribes to a Query object. It directly depends on the Query object based on the queryKey value and executes the notify method whenever the state of the Query object changes.
+QueryObserver is an object that subscribes to a Query. It depends directly on the Query with the queryKey. QueryObserver executes `notify` method whenever the state of the Query changes.
 
-QueryObserver also supports subscriptions based on the observer pattern, just like the Query. When a subscription occurs, it calls the fetch method of the Query object to request the latest server state.
+QueryObserver supports observer pattern such as Query. When a subscription occurs, it calls `fetch` method of the Query to fetch server state.
 
 ```jsx
 class QueryObserver {
@@ -341,15 +337,15 @@ class QueryObserver {
 
 <kbd>[Move to TOC](#TOC)</kbd>
 
-## Step 2: Integrating With React
+## Step 2: Integration with React
 
-When using core logic in React, components need to re-render whenever the state of the Query object changes. Unfortunately, the core logic itself is not written in React. This means that even if the state of the Query object changes, React will not trigger a re-render.
+We want to re-render React Component whenever the state of Query changes. But Query is not React code. This means that even if the state of the Query changes, React will not trigger a re-render.
 
-### Triggering Re-renders When Query Object State Changes
+### Trigger re-render when the state of Query changes
 
-React provides the custom hook [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore) for subscribing to external state changes. It allows re-rendering whenever the external state changes.
+React provides a custom hook [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore) for subscribing to external state changes. It allows for re-rendering whenever the external state changes.
 
-By integrating QueryObserver with useSyncExternalStore, you can subscribe to the latest state of a Query and trigger a re-render whenever the Query state changes. Here’s a simple implementation in code:
+By using useSyncExternalStore with QueryObserver, you can subscribe to the latest state of a Query and trigger a re-render whenever the Query state changes. Here’s a simple code implementation.
 
 ```jsx
 const useQuery = () => {
@@ -368,22 +364,22 @@ const useQuery = () => {
 };
 ```
 
-Flow of re-renders when query object state changes is below.
+The flow of re-rendering is below.
 
-1. **Create a QueryObserver**:
-   - (1-1) Create a Query object (skip this step if a cached Query already exists).
-   - (1-2) Subscribe the QueryObserver to the Query object. When subscribing, the notify member variable is assigned to onStoreChange from useSyncExternalStore.
-   - (1-3) Request the fetch method from the Query object (the fetch method may not execute if staleTime is not exceeded).
+1. Create a QueryObserver
+   - (1-1) Create a Query (skip this step if a cached Query already exists).
+   - (1-2) Subscribe the QueryObserver to the Query. When subscribing, the notify member variable is assigned to onStoreChange from useSyncExternalStore.
+   - (1-3) Request the fetch method from the Query (the fetch method may not execute if staleTime is not exceeded).
 2. After the fetch function in the Query completes, the server state is updated.
-3. The Query executes the notify function for all subscribed QueryObserver objects:
+3. The Query executes the notify function for all subscribed QueryObserver.
    - (3-1) onStoreChange from useSyncExternalStore is executed.
    - (3-2) The QueryObserver returns the latest state using the getResult function, triggering a re-render.
 
-Now let’s explore more ways to use the core logic in React.
+Let’s explore other ways to use the core logic in React.
 
 ### QueryClientProvider
 
-The QueryClient is an object accessible globally. By using Context, you can create a Provider and custom hook to make QueryClient globally accessible.
+The QueryClient is a globally accessible. Using Context, you can create a provider and custom hook to make the QueryClient globally accessible.
 
 ```jsx
 export const QueryClientContext = createContext(null);
@@ -407,7 +403,7 @@ export const useQueryClient = (queryClient) => {
 };
 ```
 
-When you declare a QueryClientProvider at the top-level component, the QueryClient becomes globally accessible.
+If you declare a QueryClientProvider on the top-level component, the QueryClient becomes globally accessible.
 
 ```jsx
 const queryClient = new QueryClient({
@@ -426,7 +422,7 @@ const App = ({ children }) => {
 
 ### useQuery
 
-useQuery is a custom hook that manages server state using a QueryObserver object.
+useQuery is a custom hook that manages server state using a QueryObserver.
 
 The logic for creating a QueryObserver and handling useSyncExternalStore is written in useBaseQuery. useQuery simply returns the result of executing useBaseQuery.
 
@@ -465,23 +461,23 @@ const useQuery = (options, queryClient) => {
 
 ## Step 3: Additional Features
 
-### 1. Triggering Refetch on Focus State Changes
+### 1. Trigger refetch when the browser’s focus state changes
 
 **Description**
 
-Implement functionality similar to refetchOnWindowFocus.
+Implement the refetchOnWindowFocus option.
 
 **Requirements**
 
-- [ ] Call the fetch method of the Query object whenever the browser’s focus state changes.
+- [ ] Call the fetch method of the Query whenever the browser’s focus state changes.
 
 **Code**
 
-You can achieve this by modifying the logic in the QueryCache object and the QueryClientProvider component.
+You can implement this by modifying the QueryCache and QueryClientProvider.
 
 **_core/QueryCache.ts_**
 
-- Execute the fetch function of all cached Query objects whenever the onFocus method is called.
+- Execute the fetch function of all cached Query whenever the onFocus method is called.
 
 ```jsx
 class QueryCache {
@@ -505,7 +501,7 @@ class QueryCache {
 **_react/QueryClientProvider.jsx_**
 
 - Call the onFocus method of the QueryCache whenever a visibilitychange or focus event occurs.
-- When the cache.onFocus event occurs, the fetch method of all cached Query objects is executed.
+- When the onFocus event occurs, the fetch method of all cached Query will be executed.
 
 ```jsx
 export const QueryClientProvider = ({ children, client }) => {
@@ -529,20 +525,20 @@ export const QueryClientProvider = ({ children, client }) => {
 };
 ```
 
-### 2. Creating a Developer Tool (ReactQueryDevtools)
+### 2. Creating a developer tool like ReactQueryDevtools
 
 **Description**
 
-Build a developer tool similar to [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools) from TanStack Query.
+Create a developer tool similar to [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools) from TanStack Query.
 
 **Requirements**
 
-- [ ] Display the status, staleTime, and gcTime information of all cached Query objects.
-- [ ] Update the list of cached Query objects whenever changes occur.
+- [ ] Display the status, staleTime, and gcTime information of all cached Query.
+- [ ] Update the list of cached Query whenever changes occur.
 
 **Code**
 
-To detect changes in cached Query objects, implement the observer pattern in QueryCache.
+To detect changes in cached Query, implement the observer pattern in QueryCache.
 
 **_core/QueryCache.js_**
 
@@ -596,7 +592,7 @@ class Query {
 
 **_react/ReactQueryDevtools.jsx_**
 
-The ReactQueryDevtools retrieves the list of cached Query objects through the QueryCache. Whenever server state changes, the tool updates the state of the Query list and triggers a re-render
+The ReactQueryDevtools retrieves the list of cached Query from the QueryCache. Whenever server state changes, the tool updates the state of the Query list and triggers a re-render.
 
 ```jsx
 const ReactQueryDevtools = () => {
@@ -653,7 +649,7 @@ const ReactQueryDevtools = () => {
 
 **_src/main.jsx_**
 
-Render the ReactQueryDevtools in the root component to see the developer tools in action.
+Render the ReactQueryDevtools on the top-level component to see the developer tools in action.
 
 ```jsx
 const App = ({ children }) => {
