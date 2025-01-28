@@ -1,4 +1,6 @@
-# Build Your Own TanStack Query and useQuery
+<div align="center">
+  <h1> Build Your Own TanStack Query and useQuery</h1>
+</div>
 
 ## 소개
 
@@ -12,11 +14,22 @@ TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트
 
 ## 목차
 
+- [소개](#소개)
+- [목차](#목차)
 - [로컬 환경 실행 방법](#로컬-환경-실행-방법)
 - [구조](#구조)
 - [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
+  - [QueryClient](#queryclient)
+  - [QueryCache](#querycache)
+  - [Query](#query)
+  - [QueryObserver](#queryobserver)
 - [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
+  - [Query 상태가 변경될 떄 다시 렌더링을 발생시키기](#query-상태가-변경될-떄-다시-렌더링을-발생시키기)
+  - [QueryClientProvider](#queryclientprovider)
+  - [useQuery](#usequery)
 - [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
+  - [1. focus 상태가 변경될 때 refetch를 발생시키기](#1-focus-상태가-변경될-때-refetch를-발생시키기)
+  - [2. 개발자 도구 만들어보기 (ReactQueryDevtools)](#2-개발자-도구-만들어보기-reactquerydevtools)
 - [참고 자료](#참고-자료)
 
 ## 로컬 환경 실행 방법
@@ -46,6 +59,10 @@ https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
 
 - **tanstack-query-lite/core**: 외부 환경에 의존되지 않는 코드입니다. QueryClient, QueryCache, Query, QueryObserver 객체가 포함됩니다.
 - **tanstack-query-lite/react:** React 라이브러리에 의존되는 코드입니다. 내부적으로 core 폴더의 코드를 의존하고 있습니다.
+
+<p align="center">
+  <img src="./architecture.png" height="500px">
+<p align="center">
 
 ## Step 1: core 로직 구현하기
 
