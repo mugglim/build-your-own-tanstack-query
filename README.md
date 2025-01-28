@@ -63,7 +63,7 @@ https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
 > We'll call the rewritten code tanstack-query-lite.
 
 - **tanstack-query-lite/core**: General code that can be used by any library. It includes the QueryClient, QueryCache, Query, and QueryObserver.
-- **tanstack-query-lite/react:**: Code that depends on the React. You can use core code in React.
+- **tanstack-query-lite/react**: Code that depends on the React. You can use core code in React.
 
 <p align="center">
   <img src="./docs/architecture.png" height="500px">
