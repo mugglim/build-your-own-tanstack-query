@@ -12,12 +12,12 @@ We're going to rewrite TanStack Query and useQuery from scratch. We'll be using 
 
 > [!WARNING]
 >
-> - **It may not match the TanStack Query exactly.**
+> - **It may not exactly match TanStack Query.**
 
 > [!IMPORTANT]
 >
 > - **This content is translated by AI.**
-> - **Please feel free to report it as an issue if you find any awkward wording**
+> - **Please feel to create an issue if you find any awkward wording**
 
 ## TOC
 
