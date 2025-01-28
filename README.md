@@ -1,38 +1,40 @@
 # Build Your Own TanStack Query and useQuery
 
-<center>
-  <a href="./docs/en.md">English</a> | 
-  <a href="./docs/ko.md">한국어</a>
- </center>
+<p align="center">
+  <a href="./docs/ko.md">한국어</a> | <a href="/README.md">English</a>
+ </p>
 
-## 소개
+## Introduction
 
-TanStack Query의 useQuery 커스텀 Hook을 직접 만들어보는 프로젝트입니다. [Tanner Linsley](https://github.com/tannerlinsley)의 [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) 발표의 내용을 참고하여 작성되었습니다.
-
-최신 코드를 반영하기 위해 TanStack Query v5의 코드를 참고했습니다.
+We're going to rewrite TanStack Query and useQuery from scratch. We'll be using the ideas and code from [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
 
 > [!WARNING]
 >
-> - TanStack Query 코드와 완벽히 일치하지 않을 수 있습니다.
+> - **It may not match the TanStack Query exactly.**
 
-## 목차
+> [!IMPORTANT]
+>
+> - **This content is translated by AI.**
+> - **Please feel free to report it as an issue if you find any awkward wording**
 
-- [로컬 환경 실행 방법](#로컬-환경-실행-방법)
-- [구조](#구조)
-- [Step 1: core 로직 구현하기](#step-1-core-로직-구현하기)
-- [Step 2: React에서 core 로직 적용하기](#step-2-react에서-core-로직-적용하기)
-- [Step 3: 추가 기능 개발해보기](#step-3-추가-기능-개발해보기)
-- [참고 자료](#참고-자료)
+## TOC
 
-## 로컬 환경 실행 방법
+- [Play Locally](#play-locally)
+- [Architecture](#architecture)
+- [Step 1: Core Implementation](#step-1-core-implementation)
+- [Step 2: Integration With React](#step-2-integration-with-react)
+- [Step 3: Additional Features](#step-3-additional-features)
+- [Reference](#reference)
 
-**Install package**
+## Play Locally
+
+Install package
 
 ```
 npm install
 ```
 
-**Run development server**
+Run development server
 
 ```
 npm run dev
@@ -42,29 +44,21 @@ npm run dev
 
 https://github.com/user-attachments/assets/11454b80-034a-4205-b051-5a3c78f1b9d0
 
-## 구조
+## Architecture
 
 > [!NOTE]
-> TanStack Query를 재작성한 코드를 ”tanstack-query-lite”로 부르겠습니다.
+> We'll call the rewritten code tanstack-query-lite.
 
-코드는 2가지 폴더의 코드로 분리되어 있습니다.
+- **tanstack-query-lite/core**: General code that can be used by any library. It includes the QueryClient, QueryCache, Query, and QueryObserver.
+- **tanstack-query-lite/react:**: Code that depends on the React. You can use core code in React.
 
-- **tanstack-query-lite/core**: 외부 환경에 의존되지 않는 코드입니다. QueryClient, QueryCache, Query, QueryObserver 객체가 포함됩니다.
-- **tanstack-query-lite/react:** React 라이브러리에 의존되는 코드입니다. 내부적으로 core 폴더의 코드를 의존하고 있습니다.
+## Step 1: Core Implementation
 
-## Step 1: core 로직 구현하기
-
-core 로직은 외부 환경에 의존되지 않는 코드입니다. React, Vue, Svelte 라이브러리의 생명주기에 맞춰 core 로직을 적용하면 core 로직의 기능을 제공할 수 있습니다.
-
-core 코드는 QueryClient, QueryCache, Query, QueryObserver 4가지 객체로 구성되어 있습니다.
+Core doesn't depend on any library. It includes the QueryClient, the QueryCache, the Query and the QueryObserver.
 
 ### QueryClient
 
-QueryClient는 QueryCache를 의존하며, 데이터 패칭 및 캐시 무효화와 같은 기능을 제공합니다. 주요 기능은 참조하고 있는 객체에서 구현되어 있습니다. 예를 들어 데이터 패칭은 Query 객체에서 구현되어 있습니다.
-
-> defaultOptions 값은 무엇인가요?
-
-Query의 기본 옵션을 전역으로 설정하는 값 입니다.
+The QueryClient depends on the QueryCache. It provides methods to fetch data or invalidating the cache. For example, QueryClient calls Query to fetch data.
 
 ```jsx
 class QueryClient {
@@ -95,7 +89,11 @@ class QueryClient {
 }
 ```
 
-아래와 같이 QueryClient 객체를 생성하면, Query 객체의 staleTime 값은 기본적으로 Infinity로 할당됩니다.
+> What is the defaultOptions?
+
+The default options for Query are used globally.
+
+If you create the QueryClient below, the staleTime is set to `Infinity` by default.
 
 ```jsx
 const queryClient = new QueryClient({
@@ -109,14 +107,14 @@ const queryClient = new QueryClient({
 
 ### QueryCache
 
-QueryCache는 메모리에 Query 객체를 캐싱하는 역할을 담당합니다. Map 객체 기반으로 구현되어 있으며, queryKey 값을 해싱하여 key로 활용합니다.
+The QueryCache caches Query in memory. It is based on a Map object, and queryKey is used as the key.
 
-- **key**: Query 객체의 queryKey 값을 기반으로 해싱된 값을 사용합니다. 해싱함수는 JSON.stringify 기반의 [hashKey](./tanstack-query-lite/core/util.js#L2) 함수를 사용합니다.
-- **value**: Query 객체
+- key: The hashed value derived from the queryKey. The [hashKey](./tanstack-query-lite/core/util.js#L2) hash function uses JSON.stringify.
+- value: Query.
 
-> QueryCache 어떤 메소드로 Query를 추가하나요?
+> What method does QueryCache use to add a Query?
 
-build 메소드를 기반으로 Query 객체를 추가합니다. 만약 queryKey 값에 해당하는 Query가 이미 존재한다면, 캐싱되어 있는 Query 객체를 반환하여 불필요한 Query 객체의 인스턴스 생성을 방지합니다.
+The `build` method. If a query is cached, the cached query object is returned to avoid creating a new instance.
 
 ```jsx
 class QueryCache {
@@ -124,7 +122,7 @@ class QueryCache {
 
   constructor() {
     /**
-     * - key: queryHash (queryKey 값을 기반으로 생성됩니다.)
+     * - key: queryHash (created by queryKey)
      * - value: Query object
      */
     this.queries = new Map();
@@ -135,7 +133,7 @@ class QueryCache {
   };
 
   build(client, options) {
-    const queryKey = options.queryKey;****
+    const queryKey = options.queryKey;
     const queryHash = hashKey(queryKey);
 
     let query = this.get(queryHash);
@@ -162,19 +160,19 @@ class QueryCache {
 
 ### Query
 
-Query 객체는 서버 상태를 관리합니다. 서버 상태 관리는 서버 상태를 저장하고, 서버 상태를 조회하는 역할을 의미합니다. 옵저버 패턴으로 구독을 허용하고 있으며, 서버 상태가 변경될 때 구독자들에게 이벤트를 발행합니다.
+Query manages server state. Server state management involves storing and fetching server state. Query also supports the observer pattern. It allows subscribers to receive events whenever the server state changes.
 
-> 서버 상태 조회 로직은 어떻게 동작하나요?
+> How does the server state fetching logic work?
 
-fetch 메소드를 제공하여 서버 상태를 조회합니다. 서버 상태 조회 로직은 Query 객체 생성 시점에 전달되는 queryFn 함수를 사용합니다. fetch 메소드가 호출될 때 마다 서버 상태 요청이 발생하지 않도록, Promise 객체를 promise 멤버 변수로 관리합니다. 요청의 상태에 promise 멤버 변수를 상태를 정리해 봅시다.
+Query provides `fetch` method to fetch server state. It uses the queryFn of the Query. To avoid repeated requests, Query uses `promise` member variable. Here is a breakdown of how the promise works during the request.
 
-- 요청 발생: queryFn 함수 기반으로 생성된 Promise 객체를 promise 멤버 변수에 할당합니다.
-- 요청 중: promise 멤버 변수의 값을 반환합니다. (Promise 객체를 새롭게 생성하지 않습니다.)
-- 요청 완료: promise 멤버 변수를 null로 초기화합니다.
+- **Request Initiated**: A Promise object, created based on the queryFn function, is assigned to the promisee.
+- **Request In Progress**: The value of the promise is returned (a new Promise object is not created).
+- **Request Completed**: The promise is reset to null.
 
-> staleTime은 어떻게 동작하나요?
+> How does staleTime work?
 
-서버 상태가 마지막으로 변경된 시점을 timestamp 기반의 lastUpdated 멤버 변수로 저장하고 있습니다. fetch 메소드가 실행되기 전 `Date.now() - lastUpdated` 값과 staleTime를 비교하여, fetch 메소드 실행 여부를 판단합니다.
+Query uses the `lastUpdated` member variable. Before the fetch method is executed, the value of `Date.now() - lastUpdated` is compared with staleTime. This comparison determines whether the fetch method should be executed.
 
 ```jsx
 const diffUpdatedAt = Date.now() - lastUpdated;
@@ -185,11 +183,11 @@ if (needsToFetch) {
 }
 ```
 
-> gcTime은 어떻게 동작하나요?
+> How does gcTime work?
 
-객체가 생성되는 시점에 [setTimeout](https://developer.mozilla.org/ko/docs/Web/API/Window/setTimeout)를 사용하여 scheduleGcTimeout 메소드를 통해 gc를 관리합니다. gcTime timeout이 호출되면 QueryCache에게 제거를 요청합니다.
+At the time of Query creation, garbage collection (GC) is managed via the `scheduleGcTimeout` method using [setTimeOut](https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout). When the gcTime timeout is triggered, Query request to QueryCache to remove the object.
 
-구독이 발생될 때 마다 clearGcTimeout 메소드를 사용하여 timeout이 초기화됩니다. 만약 구독이 해제될 때 구독자 리스트의 길이가 0 이라면, scheduleGcTimeout이 다시 실행됩니다.
+Each time a subscription occurs, the timeout is reset using the `clearGcTimeout`method. If a subscriber unsubscribes and the subscriber list becomes empty, the scheduleGcTimeout method is executed again.
 
 ```jsx
 class Query {
@@ -219,7 +217,6 @@ class Query {
       lastUpdated: undefined
     };
 
-    // Query 객체 생성 시점에 QueryCache에게 gc를 요청합니다.
     this.scheduleGcTimeout();
   }
 
@@ -239,7 +236,6 @@ class Query {
   subscribe = (observer) => {
     this.observers.push(observer);
 
-    // 구독이 발생할 때 gc 요청을 해제합니다.
     this.clearGcTimeout();
 
     const unsubscribe = () => {
@@ -247,7 +243,6 @@ class Query {
         return d !== observer;
       });
 
-      // 구독이 해제되는 시점에 구독 리스트의 길이가 0 이라면, QueryCache에게 gc를 다시 요청합니다.
       if (!this.observers.length) {
         this.scheduleGcTimeout();
       }
@@ -260,13 +255,11 @@ class Query {
     this.state = updater(this.state);
 
     this.observers.forEach((observer) => {
-      // 상태가 변경될 때, 구독자들에게 상태 변경 이벤트를 발행합니다.
       observer.notify();
     });
   };
 
   fetch = () => {
-    // promise 객체를 멤버 변수로 활용하여, 불필요한 요청을 방지합니다.
     if (!this.promise) {
       this.promise = (async () => {
         this.setState((old) => ({ ...old, isFetching: true, error: undefined }));
@@ -296,9 +289,9 @@ class Query {
 
 ### QueryObserver
 
-QueryObserver는 Query 객체를 구독하는 객체입니다. queryKey 값을 기반으로 Query 객체를 직접적으로 의존할 수 있으며, Query 객체의 상태가 변경될 때 마다 이벤트를 발행받아 notify 메소드를 실행시킵니다.
+QueryObserver is an object that subscribes to a Query. It depends directly on the Query with the queryKey. QueryObserver executes `notify` method whenever the state of the Query changes.
 
-QueryObserver는 Query와 동일하게 옵저버 패턴을 기반으로 구독을 허용하고 있습니다. 구독이 발생할 때 Query 객체의 fetch 메소드를 실행하여 최신 서버 상태를 조회하도록 요청합니다.
+QueryObserver supports observer pattern such as Query. When a subscription occurs, it calls `fetch` method of the Query to fetch server state.
 
 ```jsx
 class QueryObserver {
@@ -312,19 +305,16 @@ class QueryObserver {
   }
 
   getQuery = () => {
-    // options의 queryKey 값을 기반으로 구독되어 있는 Query를 조회합니다.
     const query = this.client.getQueryCache().build(this.client, this.options);
 
     return query;
   };
 
   getResult = () => {
-    // Query 객체에서 관리하고 있는 서버 상태를 조회합니다.
     return this.getQuery().state;
   };
 
   subscribe = (callback) => {
-    // Query 객체의 서버 상태가 변경될 때 호출이 필요한 callback 함수를 notify 멤버 변수로 저장합니다.
     this.notify = callback;
 
     const query = this.getQuery();
@@ -349,31 +339,28 @@ class QueryObserver {
 }
 ```
 
-<kbd>[목차로 이동하기](#목차)</kbd>
+<kbd>[Move to TOC](#TOC)</kbd>
 
-## Step 2: React에서 core 로직 적용하기
+## Step 2: Integration with React
 
-React에서 core 로직을 사용하는 경우, Query 객체의 상태가 변경될 때 컴포넌트의 다시 렌더링을 발생시켜야 합니다. 아쉽게도 core 로직은 React로 작성된 코드가 아닙니다. Query 객체의 상태가 변경되더라도 다시 렌더링이 발생하지는 않습니다.
+We want to re-render React Component whenever the state of Query changes. But Query is not React code. This means that even if the state of the Query changes, React will not trigger a re-render.
 
-### Query 객체 상태가 변경될 떄 다시 렌더링을 발생시키기
+### Trigger re-render when the state of Query changes
 
-React는 외부 상태를 구독할 수 있는 [useSyncExternalStore](https://ko.react.dev/reference/react/useSyncExternalStore) 커스텀 Hook을 제공하고 있습니다. 외부 상태 변경을 구독할 수 있으며, 상태 값이 변경될 때 마다 다시 렌더링이 발생됩니다.
+React provides a custom hook [useSyncExternalStore](https://react.dev/reference/react/useSyncExternalStore) for subscribing to external state changes. It allows for re-rendering whenever the external state changes.
 
-QueryObserver를 useSyncExternalStore와 연동하면 Query의 최신 상태를 구독할 수 있고, Query 상태가 변경될 때 마다 다시 렌더링을 발생시킬 수 있습니다. 코드로 간단히 구현해보면 아래와 같습니다.
+By using useSyncExternalStore with QueryObserver, you can subscribe to the latest state of a Query and trigger a re-render whenever the Query state changes. Here’s a simple code implementation.
 
 ```jsx
 const useQuery = () => {
   const [queryObserver] = useState(() => new QueryObserver());
 
   useSyncExternalStore(
-    // subscribe
     useCallback((onStoreChange) => {
-      // Query 객체를 생성하고, Query 객체의 상태가 변경될 때 onStoreChange 함수를 호출한다.
       const unsubscribe = queryObserver.subscribe(onStoreChange);
 
       return unsubscribe;
     }, []),
-    // onStoreChange 함수가 호출될 때 Object.is로 이전 값과 최신 값을 비교하여, 다시 렌더링을 발생시킨다.
     () => queryObserver.getResult()
   );
 
@@ -381,22 +368,22 @@ const useQuery = () => {
 };
 ```
 
-Query 객체의 상태가 변경되고 다시 렌더링이 발생하는 흐름을 정리해 보면 아래와 같습니다.
+The flow of re-rendering is below.
 
-1. QueryObserver를 생성합니다.
-   - (1-1) Query 객체를 생성합니다. (캐시된 Query 값이 있는 경우 생략합니다.)
-   - (1-2) Query 객체에 QueryObserver를 구독합니다. 구독할 때 notify 멤버 변수가 useSyncExternalStore의 onStoreChange로 할당됩니다.
-   - (1-3) Query 객체에게 fetch 메소드를 요청합니다. (staleTime에 따라서 fetch 메소드가 실행되지 않을 수 있습니다.)
-2. Query에서 fetch 함수가 종료된 후 서버 상태를 변경합니다.
-3. Query는 구독되어 있는 QueryObserver의 notify를 실행합니다.
-   - (3-1) useSyncExternalStore의 onStoreChange가 실행합니다.
-   - (3-2) QueryObserver는 getResult 함수를 통해 최신 상태를 반환하고 다시 렌더링을 발생시킵니다.
+1. Create a QueryObserver
+   - (1-1) Create a Query (skip this step if a cached Query already exists).
+   - (1-2) Subscribe the QueryObserver to the Query. When subscribing, the notify member variable is assigned to onStoreChange from useSyncExternalStore.
+   - (1-3) Request the fetch method from the Query (the fetch method may not execute if staleTime is not exceeded).
+2. After the fetch function in the Query completes, the server state is updated.
+3. The Query executes the notify function for all subscribed QueryObserver.
+   - (3-1) onStoreChange from useSyncExternalStore is executed.
+   - (3-2) The QueryObserver returns the latest state using the getResult function, triggering a re-render.
 
-이제 core 로직을 React에서 활용할 수 있는 방법을 조금 더 알아보려고 합니다.
+Let’s explore other ways to use the core logic in React.
 
 ### QueryClientProvider
 
-QueryClient는 전역으로 접근할 수 있는 객체입니다. Context를 이용하여 QueryClient를 전역으로 접근할 수 있도록 Provider와 커스텀 Hook을 작성해봅니다.
+The QueryClient is a globally accessible. Using Context, you can create a provider and custom hook to make the QueryClient globally accessible.
 
 ```jsx
 export const QueryClientContext = createContext(null);
@@ -420,7 +407,7 @@ export const useQueryClient = (queryClient) => {
 };
 ```
 
-최상위 컴포넌트에서 QueryClientProvider를 선언하면, 전역에서 QueryClient를 접근할 수 있습니다.
+If you declare a QueryClientProvider on the top-level component, the QueryClient becomes globally accessible.
 
 ```jsx
 const queryClient = new QueryClient({
@@ -432,7 +419,6 @@ const queryClient = new QueryClient({
   }
 });
 
-// 최상위 컴포넌트
 const App = ({ children }) => {
   return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 };
@@ -440,9 +426,9 @@ const App = ({ children }) => {
 
 ### useQuery
 
-useQuery는 QueryObserver 객체를 이용하여 서버 상태를 관리하는 커스텀 Hook입니다.
+useQuery is a custom hook that manages server state using a QueryObserver.
 
-QueryObserver 생성 및 useSyncExternalStore 처리 로직은 useBaseQuery에 작성되어 있습니다. useQuery는 단순히 useBaseQuery의 실행값을 반환합니다.
+The logic for creating a QueryObserver and handling useSyncExternalStore is written in useBaseQuery. useQuery simply returns the result of executing useBaseQuery.
 
 ```jsx
 const useBaseQuery = (options, Observer, queryClient) => {
@@ -455,7 +441,6 @@ const useBaseQuery = (options, Observer, queryClient) => {
 
   const subscribe = useCallback(
     (onStoreChange) => {
-      // Query 객체의 상태가 변경될 때 onStoreChange 메소드가 호출됩니다.
       const unsubscribe = observer.subscribe(onStoreChange);
       return unsubscribe;
     },
@@ -463,11 +448,9 @@ const useBaseQuery = (options, Observer, queryClient) => {
   );
 
   const getSnapshot = useCallback(() => {
-    // Object.is 를 기반으로 다시 렌더링 여부를 판단합니다.
     return observer.getResult();
   }, [observer]);
 
-  // core 로직과 React를 연결합니다.
   useSyncExternalStore(subscribe, getSnapshot);
 
   return observer.getResult();
@@ -478,27 +461,27 @@ const useQuery = (options, queryClient) => {
 };
 ```
 
-<kbd>[목차로 이동하기](#목차)</kbd>
+<kbd>[Move to TOC](#TOC)</kbd>
 
-## Step 3: 추가 기능 개발해보기
+## Step 3: Additional Features
 
-### 1. focus 상태가 변경될 때 refetch를 발생시키기
+### 1. Trigger refetch when the browser’s focus state changes
 
-**설명**
+**Description**
 
-refetchOnWindowFocus와 비슷한 기능을 구현해봅니다.
+Implement the refetchOnWindowFocus option.
 
-**요구사항**
+**Requirements**
 
-- [ ] 브라우저의 focus 상태가 변경될 때 Query 객체의 fetch 메소드를 호출합니다.
+- [ ] Call the fetch method of the Query whenever the browser’s focus state changes.
 
-**코드**
+**Code**
 
-QueryCache 객체 와 QueryClientProvider 컴포넌트 로직을 일부 수정하면 해결할 수 있습니다.
+You can implement this by modifying the QueryCache and QueryClientProvider.
 
 **_core/QueryCache.ts_**
 
-- onFocus 메소드가 호출될 때, 캐싱되어 있는 모든 Query 객체의 fetch 함수를 실행합니다.
+- Execute the fetch function of all cached Query whenever the onFocus method is called.
 
 ```jsx
 class QueryCache {
@@ -521,8 +504,8 @@ class QueryCache {
 
 **_react/QueryClientProvider.jsx_**
 
-- visibilitychange 또는 focus 이벤트가 발생할 때 QueryCache의 onFocus 메소드를 호출합니다.
-- cache.onFocus 이벤트가 발생하면 캐싱되어 있는 모든 Query 객체의 fetch 메소드가 호출됩니다.
+- Call the onFocus method of the QueryCache whenever a visibilitychange or focus event occurs.
+- When the onFocus event occurs, the fetch method of all cached Query will be executed.
 
 ```jsx
 export const QueryClientProvider = ({ children, client }) => {
@@ -546,20 +529,20 @@ export const QueryClientProvider = ({ children, client }) => {
 };
 ```
 
-### 2. 개발자 도구 만들어보기 (ReactQueryDevtools)
+### 2. Creating a developer tool like ReactQueryDevtools
 
-**설명**
+**Description**
 
-TanStack Query의 [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools)를 만들어봅니다.
+Create a developer tool similar to [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools) from TanStack Query.
 
-**요구사항**
+**Requirements**
 
-- [ ] 캐싱 되어 있는 Query의 status, staleTime, gcTime 정보가 표시됩니다.
-- [ ] 캐싱 되어 있는 Query의 변화가 발생하면 최신 Query 목록을 갱신합니다.
+- [ ] Display the status, staleTime, and gcTime information of all cached Query.
+- [ ] Update the list of cached Query whenever changes occur.
 
-**코드**
+**Code**
 
-QueryCache에 캐싱 되어 있는 Query의 변화를 감지하기 위해, QueryCache에 옵저버 패턴을 적용합니다.
+To detect changes in cached Query, implement the observer pattern in QueryCache.
 
 **_core/QueryCache.js_**
 
@@ -570,13 +553,9 @@ class QueryCache {
   constructor() {
     // ...
 
-    // 이벤트를 발행할 구독자들을 저장합니다.
     this.listeners = new Set();
   }
 
-  // ...
-
-  // 이벤트를 발행할 구독자를 추가합니다.
   subscribe = (listener) => {
     this.listeners.add(listener);
 
@@ -587,7 +566,6 @@ class QueryCache {
     return unsubscribe;
   };
 
-  // 이벤트를 발행합니다.
   notify = () => {
     this.listeners.forEach((callback) => {
       callback();
@@ -598,22 +576,19 @@ class QueryCache {
 
 **_core/Query.js_**
 
-Query는 서버 상태가 변경될 때 QueryCache의 notify 메소드를 호출하여, QueryCache에 구독되어 있는 구독자들에게 이벤트를 발행합니다.
+The Query calls the notify method of the QueryCache whenever the server state changes, publishing events to all subscribers of the QueryCache.
 
 ```jsx
 class Query {
   scheduleGcTimeout = () => {
     // ...
     this.gcTimeout = setTimeout(() => {
-      // gc 시점에 QueryCache에게 이벤트를 발행합니다
       this.cache.notify();
     }, gcTime);
   };
 
   setState() {
     // ...
-
-    // 상태 변경되면 QueryCache에게 이벤트를 발행합니다.
     this.cache.notify();
   }
 }
@@ -621,17 +596,15 @@ class Query {
 
 **_react/ReactQueryDevtools.jsx_**
 
-ReactQueryDevtools는 QueryCache를 통해 캐싱되어 있는 Query 목록을 조회합니다. 서버 상태가 변경될 때 Query 목록의 상태를 갱신하기 위해 다시 렌더링됩니다.
+The ReactQueryDevtools retrieves the list of cached Query from the QueryCache. Whenever server state changes, the tool updates the state of the Query list and triggers a re-render.
 
 ```jsx
 const ReactQueryDevtools = () => {
   const queryClient = useQueryClient();
 
-  // rerender 함수를 호출하면 다시 렌더링이 발생합니다.
   const [, rerender] = useReducer((i) => i + 1, 0);
 
   useEffect(() => {
-    // QueryCache에서 notify 이벤트가 발행되면 rerender 함수를 호출합니다.
     return queryClient.cache.subscribe(rerender);
   }, [queryClient]);
 
@@ -680,7 +653,7 @@ const ReactQueryDevtools = () => {
 
 **_src/main.jsx_**
 
-루트 컴포넌트에 ReactQueryDevtools를 렌더링하면, DevTools가 동작하는 것을 확인하실 수 있습니다.
+Render the ReactQueryDevtools on the top-level component to see the developer tools in action.
 
 ```jsx
 const App = ({ children }) => {
@@ -693,9 +666,9 @@ const App = ({ children }) => {
 };
 ```
 
-## 참고 자료
+## Reference
 
 - [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0)
 - [Inside React Query](https://tkdodo.eu/blog/inside-react-query)
 
-<kbd>[목차로 이동하기](#목차)</kbd>
+<kbd>[Move to TOC](#TOC)</kbd>
