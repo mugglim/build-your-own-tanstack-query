@@ -4,10 +4,8 @@ export default defineConfig({
   title: "Build your own TanStack Query",
   description: "Build your own TanStack Query",
   locales: {
-    root: { label: "한국어" },
-    en: { label: "English" }
+    root: { label: "한국어" }
   },
-
   themeConfig: {
     siteTitle: "Build Your Own TanStack Query",
     outline: "deep",

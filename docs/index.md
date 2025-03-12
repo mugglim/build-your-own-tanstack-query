@@ -4,7 +4,7 @@ layout: home
 
 hero:
   name: "Build Your Won TanStack Query"
-  tagline: "TanStack Query를 직접 만들어보는 경험"
+  tagline: "밑바닥부터 구현해보기"
   actions:
     - theme: brand
       text: Build Your Won TanStack Query 소개
@@ -17,10 +17,10 @@ hero:
       link: /refetch-on-window-focus
 
 features:
-  - title: 직접 만들어보는 경험
-    details: 라이브러리를 직접 만들어보면서 TanStack Query의 이해도를 높일 수 있어요.
+  - title: 직접 만들어보기
+    details: 직접 만들어보면서 TanStack Query의 이해도를 높일 수 있어요.
+  - title: Query options
+    details: staleTime, gcTime(cacheTime)의 동작 원리를 이애할 수 있어요.
   - title: React
-    details: React에서 TanStack Query를 사용하는 방법을 제공해요.
-  - title: useQuery 옵션의 이해
-    details: staleTime, gcTime 옵션의 동작 흐름을 제공해요.
+    details: 서버 상태를 TanStack Query로 관리하는 방법을 제공해요.
 ---
