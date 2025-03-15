@@ -2,18 +2,12 @@ import { defineConfig } from "vitepress";
 
 export default defineConfig({
   title: "Build your own TanStack Query",
-  description: "Build your own TanStack Query",
   locales: {
     root: { label: "한국어" }
   },
   themeConfig: {
-    siteTitle: "Build Your Own TanStack Query",
-    outline: "deep",
-    nav: [
-      { text: "소개", link: "/intro" },
-      { text: "주요 기능", link: "/core" },
-      { text: "추가 기능", link: "/refetch-on-window-focus" }
-    ],
+    siteTitle: "Home",
+    nav: [{ text: "학습하기", link: "/intro" }],
     sidebar: [
       {
         text: "가이드",
@@ -33,8 +27,8 @@ export default defineConfig({
           {
             text: "추가 기능",
             items: [
-              { text: "refetchOnWindowFocus", link: "/refetch-on-window-focus" },
-              { text: "개발 도구", link: "/dev-tool" }
+              { text: "Window Focus Refetching", link: "/window-focus-refetching" },
+              { text: "Devtools", link: "/devtools" }
             ]
           }
         ]

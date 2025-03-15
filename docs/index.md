@@ -7,20 +7,14 @@ hero:
   tagline: "밑바닥부터 구현해보기"
   actions:
     - theme: brand
-      text: Build Your Won TanStack Query 소개
-      link: /markdown-examples
-    - theme: alt
-      text: 주요 기능
-      link: /core
-    - theme: alt
-      text: 추가 기능
-      link: /refetch-on-window-focus
+      text: 학습하기
+      link: /intro
 
 features:
-  - title: 직접 만들어보기
-    details: 직접 만들어보면서 TanStack Query의 이해도를 높일 수 있어요.
-  - title: Query options
-    details: staleTime, gcTime(cacheTime)의 동작 원리를 이애할 수 있어요.
-  - title: React
-    details: 서버 상태를 TanStack Query로 관리하는 방법을 제공해요.
+  - title: 직접 만들어보는 경험
+    details: 밑바닥부터 구현해보면서 TanStack Query의 이해도를 높일 수 있습니다.
+  - title: query-core
+    details: QueryClient, QueryCache, Query, QueryObserver를 직접 구현해봅니다.
+  - title: react-query
+    details: useQuery, QueryClientProvider, ReactQueryDevtools를 직접 구현해봅니다.
 ---
