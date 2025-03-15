@@ -29,9 +29,11 @@ export const QueryClientProvider = ({ children, client }) => {
     };
 
     window.addEventListener("visibilitychange", onFocus, false);
+    window.addEventListener("focus", onFocus, false);
 
     return () => {
       window.removeEventListener("visibilitychange", onFocus, false);
+      window.removeEventListener("focus", onFocus, false);
     };
   }, [client]);
 
