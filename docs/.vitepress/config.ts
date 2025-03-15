@@ -7,6 +7,9 @@ export default defineConfig({
   },
   themeConfig: {
     siteTitle: "Home",
+    search: {
+      provider: "local"
+    },
     nav: [{ text: "학습하기", link: "/intro" }],
     sidebar: [
       {
