@@ -1,13 +1,16 @@
 {
-  "name": "react-query-lite",
+  "name": "build-your-own-tanstack-query",
   "private": true,
-  "version": "0.0.0",
+  "homepage": "https://mugglim.github.io/build-your-own-tanstack-query",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
   },
   "dependencies": {
     "@tanstack/react-router": "^1.78.2",
@@ -33,7 +36,8 @@
     "tailwindcss": "^3.4.14",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.8.0",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "vitepress": "^1.6.3"
   },
   "optionalDependencies": {
     "@rollup/rollup-linux-x64-gnu": "^4.30.1"

@@ -21,7 +21,11 @@ export const QueryClientProvider = ({ children, client }) => {
     const cache = client.getQueryCache();
 
     const onFocus = () => {
-      cache.onFocus();
+      const isFocused = document.visibilityState !== "hidden";
+
+      if (isFocused) {
+        cache.onFocus();
+      }
     };
 
     window.addEventListener("visibilitychange", onFocus, false);
