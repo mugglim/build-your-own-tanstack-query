@@ -1,7 +1,7 @@
 {
-  "name": "react-query-lite",
+  "name": "build-your-own-tanstack-query",
   "private": true,
-  "version": "0.0.0",
+  "homepage": "https://mugglim.github.io/build-your-own-tanstack-query",
   "type": "module",
   "scripts": {
     "dev": "vite",
