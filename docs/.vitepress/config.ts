@@ -1,6 +1,7 @@
 import { defineConfig } from "vitepress";
 
 export default defineConfig({
+  base: "/build-your-own-tanstack-query/",
   title: "Build your own TanStack Query",
   locales: {
     root: { label: "한국어" }
