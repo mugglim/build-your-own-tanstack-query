@@ -1,14 +1,11 @@
-<div align="center">
-  <h1> Build Your Own TanStack Query and useQuery</h1>
-</div>
+# Build Your Own TanStack Query and useQuery
 
-<p align="center">
-  <a href="./docs/ko.md">한국어</a> | <a href="/README.md">English</a>
-</p>
+<a href="./docs/ko.md">한국어</a> | <a href="/README.md">English</a>
 
 ## Introduction
 
-We're going to rewrite TanStack Query and useQuery from scratch. We'll be using the ideas and code from [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
+We're going to rewrite TanStack Query and useQuery from scratch.  
+We'll be using the ideas and code from [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
 
 > [!WARNING]
 >
@@ -21,23 +18,24 @@ We're going to rewrite TanStack Query and useQuery from scratch. We'll be using 
 
 ## TOC
 
-- [Introduction](#introduction)
-- [TOC](#toc)
-- [Play Locally](#play-locally)
-- [Architecture](#architecture)
-- [Step 1: Core Implementation](#step-1-core-implementation)
-  - [QueryClient](#queryclient)
-  - [QueryCache](#querycache)
-  - [Query](#query)
-  - [QueryObserver](#queryobserver)
-- [Step 2: Integration with React](#step-2-integration-with-react)
-  - [Trigger re-render when the state of Query changes](#trigger-re-render-when-the-state-of-query-changes)
-  - [QueryClientProvider](#queryclientprovider)
-  - [useQuery](#usequery)
-- [Step 3: Additional Features](#step-3-additional-features)
-  - [1. Trigger refetch when the browser’s focus state changes](#1-trigger-refetch-when-the-browsers-focus-state-changes)
-  - [2. Creating a developer tool like ReactQueryDevtools](#2-creating-a-developer-tool-like-reactquerydevtools)
-- [Reference](#reference)
+- [Build Your Own TanStack Query and useQuery](#build-your-own-tanstack-query-and-usequery)
+  - [Introduction](#introduction)
+  - [TOC](#toc)
+  - [Play Locally](#play-locally)
+  - [Architecture](#architecture)
+  - [Step 1: Core Implementation](#step-1-core-implementation)
+    - [QueryClient](#queryclient)
+    - [QueryCache](#querycache)
+    - [Query](#query)
+    - [QueryObserver](#queryobserver)
+  - [Step 2: Integration with React](#step-2-integration-with-react)
+    - [Trigger re-render when the state of Query changes](#trigger-re-render-when-the-state-of-query-changes)
+    - [QueryClientProvider](#queryclientprovider)
+    - [useQuery](#usequery)
+  - [Step 3: Additional Features](#step-3-additional-features)
+    - [1. Trigger refetch when the browser’s focus state changes](#1-trigger-refetch-when-the-browsers-focus-state-changes)
+    - [2. Creating a developer tool like ReactQueryDevtools](#2-creating-a-developer-tool-like-reactquerydevtools)
+  - [Reference](#reference)
 
 ## Play Locally
 
