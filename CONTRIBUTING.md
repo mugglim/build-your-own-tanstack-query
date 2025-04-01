@@ -7,7 +7,7 @@ We welcome contribution from everyone.
 You can contribute to this repository
 
 - Improving our [docs](https://mugglim.github.io/build-your-own-tanstack-query/).
-- Improving our [tanstack-query-lite](../tanstack-query-lite/) features.
+- Improving our [tanstack-query-lite](https://github.com/mugglim/build-your-own-tanstack-query/tree/chore/add-contributing/tanstack-query-lite) features.
 
 ## Get started
 
