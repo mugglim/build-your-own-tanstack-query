@@ -3,6 +3,8 @@ import { defineConfig } from "vitepress";
 export default defineConfig({
   base: "/build-your-own-tanstack-query/",
   title: "Build your own TanStack Query",
+  description: "Build your own TanStack Query",
+  head: [["link", { rel: "icon", href: "/build-your-own-tanstack-query/favicon.png" }]],
   locales: {
     root: { label: "한국어" }
   },
