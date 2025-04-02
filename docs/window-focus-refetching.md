@@ -37,7 +37,7 @@ class QueryCache {
 
 focus 상태 변경에 대한 감지는 document 객체의 [visibilitychange](https://developer.mozilla.org/en-US/docs/Web/API/Document/visibilitychange_event) 이벤트를 기반으로 감지할 수 있습니다.
 
-`visibilitychange` 이벤트가 발생할 때 `document.visibilityState !== hidden` 인 경우, 브라우저의 focus가 다시 활성화된 상태로 판단할 수 있습니다. 브랑줘의 focus가 다시 활성화 된 경우, QueryCache의 `focus` 메소드를 호출하여 활성화 된 Query들에게 fetch를 발생시킬 수 있다.
+`visibilitychange` 이벤트가 발생할 때 `document.visibilityState !== hidden` 인 경우, 브라우저의 focus가 다시 활성화된 상태로 판단할 수 있습니다. 브라우저의 focus가 다시 활성화된 경우, QueryCache의 `focus` 메소드를 호출하여 활성화 된 Query들에게 fetch를 발생시킬 수 있다.
 
 ```jsx
 export const QueryClientProvider = ({ children, client }) => {
