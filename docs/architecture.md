@@ -1,6 +1,6 @@
 # 구조
 
-TanStack Query는 외부 라이브리에 의존하지 않는 코어 영역의 코드가 패키지로 분리되어 있습니다. [query-core](https://github.com/TanStack/query/tree/main/packages/query-core) 패키지로 관리되고 있으며 QueryCache, QueryClient와 같은 코드가 구현되어 있습니다.
+TanStack Query는 외부 라이브러리에 의존하지 않는 코어 영역의 코드가 패키지로 분리되어 있습니다. [query-core](https://github.com/TanStack/query/tree/main/packages/query-core) 패키지로 관리되고 있으며 QueryCache, QueryClient와 같은 코드가 구현되어 있습니다.
 
 TanStack Query는 특정 라이브러리에서 바로 사용할 수 있는 패키지도 관리하고 있습니다. 기반은 query-core 패키지를 사용하며 라이브러리의 문법과 생명주기에 맞춰서 query-core 코드를 의존하고 있습니다.
 

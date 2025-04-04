@@ -113,7 +113,7 @@ Query는 서버 상태를 조회하고 관리하는 객체입니다. Query 객�
 
 ### `staleTime`은 어떻게 동작하나요?
 
-Query는 서버 상태가 마지막으로 변경된 시점을 `lastUpdated` 변수로 저장하고 있습니다. fetch 메소드가 실행되기 전 `Date.now() - lastUpdated` 값이 `staleTime` 보다 큰 경우에만 `fetch` 메소들르 실행시킵니다.
+Query는 서버 상태가 마지막으로 변경된 시점을 `lastUpdated` 변수로 저장하고 있습니다. fetch 메소드가 실행되기 전 `Date.now() - lastUpdated` 값이 `staleTime` 보다 큰 경우에만 `fetch` 메소드를 실행시킵니다.
 
 | `Date.now() - lastUpdated` > `staleTime` | `fetch` 실행 여부 |
 | :--------------------------------------: | :---------------: |
@@ -187,7 +187,7 @@ class Query {
     this.clearGcTimeout();
 
     const unsubscribe = () => {
-      this.observers = this.observers.filter(() => {
+      this.observers = this.observers.filter((d) => {
         return d !== observer;
       });
 
