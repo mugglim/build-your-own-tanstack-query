@@ -1,5 +1,4 @@
 ---
-# https://vitepress.dev/reference/default-theme-home-page
 layout: home
 
 hero:
@@ -8,7 +7,10 @@ hero:
   actions:
     - theme: brand
       text: 학습하기
-      link: /intro
+      link: /overview
+    - theme: alt
+      text: Github
+      link: https://github.com/mugglim/build-your-own-tanstack-query
 
 features:
   - title: 직접 만들어보는 경험

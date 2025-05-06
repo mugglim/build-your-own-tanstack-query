@@ -1,4 +1,4 @@
-# DevTools
+# ReactQueryDevTools
 
 ## 설명
 
