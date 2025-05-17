@@ -2,11 +2,11 @@
 layout: home
 
 hero:
-  name: "Build Your Won TanStack Query"
+  name: "Build Your Own TanStack Query"
   tagline: "Rewrite TanStack Query from scratch"
   actions:
     - theme: brand
-      text: About Build Your Won TanStack Query
+      text: About Build Your Own TanStack Query
       link: /intro.html
     - theme: alt
       text: Github
