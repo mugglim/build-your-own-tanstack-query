@@ -2,16 +2,16 @@
 
 ## 설명
 
-TanStack Query의 [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools)를 만들어봅니다.
+TanStack Query의 [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools)를 만들어봅시다.
 
 ## 요구사항
 
-- 캐싱 되어 있는 Query의 status, staleTime, gcTime 정보가 표시됩니다.
-- 캐싱 되어 있는 Query의 변화가 발생하면 최신 Query 목록을 갱신합니다.
+- 캐싱 되어 있는 `Query`의 status, staleTime, gcTime 정보가 표시됩니다.
+- 캐싱 되어 있는 `Query`의 변화가 발생하면 최신 `Query` 목록을 갱신합니다.
 
 ## 해결방안
 
-QueryCache에 캐싱 되어 있는 Query의 변화를 감지하기 위해, QueryCache에게 구독 기능을 적용합니다.
+`QueryCache`에 캐싱 되어 있는 `Query`의 변화를 감지하기 위해, `QueryCache`에게 구독 기능을 적용합니다.
 
 ### QueryCache
 
@@ -46,7 +46,7 @@ class QueryCache {
 
 ### Query
 
-Query는 서버 상태가 변경될 때 QueryCache의 notify 메소드를 호출하여, QueryCache에 구독되어 있는 구독자들에게 이벤트를 발행합니다.
+`Query`는 서버 상태가 변경될 때 `QueryCache`의 notify 메소드를 호출하여, `QueryCache`에 구독되어 있는 구독자들에게 이벤트를 발행합니다.
 
 ```jsx
 class Query {
@@ -69,7 +69,7 @@ class Query {
 
 ### ReactQueryDevtools
 
-ReactQueryDevtools는 QueryCache를 통해 캐싱되어 있는 Query 목록을 조회합니다. 서버 상태가 변경될 때 Query 목록의 상태를 갱신하기 위해 리렌더링 됩니다.
+ReactQueryDevtools는 `QueryCache`를 통해 캐싱되어 있는 Query 목록을 조회합니다. 서버 상태가 변경될 때 Query 목록의 상태를 갱신하기 위해 리렌더링 됩니다.
 
 ```jsx
 const ReactQueryDevtools = () => {
@@ -126,9 +126,7 @@ const ReactQueryDevtools = () => {
 };
 ```
 
-**_src/main.jsx_**
-
-루트 컴포넌트에 ReactQueryDevtools를 렌더링하면, DevTools가 동작하는 것을 확인하실 수 있습니다.
+최상위 컴포넌트에서 `ReactQueryDevtools`를 렌더링하면 DevTools가 동작하는 것을 확인하실 수 있습니다.
 
 ```jsx
 const App = ({ children }) => {

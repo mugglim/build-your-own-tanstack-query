@@ -6,8 +6,8 @@ hero:
   tagline: "밑바닥부터 구현해보기"
   actions:
     - theme: brand
-      text: 학습하기
-      link: /overview
+      text: 알아보기
+      link: /ko/intro.html
     - theme: alt
       text: Github
       link: https://github.com/mugglim/build-your-own-tanstack-query
