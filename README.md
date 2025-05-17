@@ -1,11 +1,10 @@
 # Build Your Own TanStack Query
 
-<a href="https://mugglim.github.io/build-your-own-tanstack-query">한국어</a> | <a href="/en.md">English</a>
+<a href="https://mugglim.github.io/build-your-own-tanstack-query">English</a> | <a href="https://mugglim.github.io/build-your-own-tanstack-query/ko">한국어</a>
 
 ## Introduction
 
-We're going to rewrite TanStack Query and useQuery from scratch.
-We'll be using the ideas and code from [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
+We're going to rewrite TanStack Query and useQuery from scratch. We'll be using the ideas and code from [Let's Build React Query in 150 Lines of Code!](https://www.youtube.com/watch?v=9SrIirrnwk0) and TanStack Query v5.
 
 ## Demo
 
