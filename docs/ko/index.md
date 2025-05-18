@@ -2,7 +2,7 @@
 layout: home
 
 hero:
-  name: "Build Your Won TanStack Query"
+  name: "Build Your Own TanStack Query"
   tagline: "밑바닥부터 구현해보기"
   actions:
     - theme: brand
