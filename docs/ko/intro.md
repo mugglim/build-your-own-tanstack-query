@@ -24,7 +24,7 @@ npm run dev
 
 ## 최종 결과 확인하기
 
-구현된 코드는 Github에서 확인하실 수 있습니다.
+구현된 코드는 [GitHub](https://github.com/mugglim/build-your-own-tanstack-query) 에서 확인하실 수 있습니다.
 
 <video width="100%" height="240" controls>
   <source src="/demo.mov" type="video/mp4">
