@@ -7,7 +7,7 @@ TanStack Query 라이브러리를 밑바닥부터 구현하는 방법을 소개�
 ## 목표
 
 - TanStack Query의 동작 흐름을 알아봅니다.
-  -React 환경에서 TanStack Query를 사용하는 방법을 알아봅니다.
+- React 환경에서 TanStack Query를 사용하는 방법을 알아봅니다.
 
 ## 개발 환경 구성하기
 
