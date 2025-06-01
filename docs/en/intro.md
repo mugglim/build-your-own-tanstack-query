@@ -27,7 +27,7 @@ npm run dev
 
 ## Result
 
-You can check out the completed implementation on GitHub.
+You can check out the completed implementation on [GitHub](https://github.com/mugglim/build-your-own-tanstack-query).
 
 <video width="100%" height="240" controls>
   <source src="/demo.mov" type="video/mp4">

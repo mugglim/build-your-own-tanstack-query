@@ -9,7 +9,7 @@ hero:
       text: About Build Your Own TanStack Query
       link: /intro.html
     - theme: alt
-      text: Github
+      text: GitHub
       link: https://github.com/mugglim/build-your-own-tanstack-query
 
 features:
