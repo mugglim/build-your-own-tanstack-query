@@ -9,7 +9,7 @@ hero:
       text: 알아보기
       link: /ko/intro.html
     - theme: alt
-      text: Github
+      text: GitHub
       link: https://github.com/mugglim/build-your-own-tanstack-query
 
 features:
