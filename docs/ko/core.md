@@ -306,7 +306,7 @@ export class Query {
 
 ## Step4: QueryObserver
 
-`QueryObserver`는 `QueryObserver`는 `Query`의 최적화 용도로 사용됩니다. 예를 들어 `staleTime`을 활용하여 불필요한 `Query`의 `fetch` 호출을 방지합니다.
+`QueryObserver`는 `Query`의 최적화 용도로 사용됩니다. 예를 들어 `staleTime`을 활용하여 불필요한 `Query`의 `fetch` 호출을 방지합니다.
 
 `QueryObserver`는 하나의 `Query`를 구독합니다. `queryKey` 값을 기반으로 구독할 `Query` 객체를 결정하며 `Query`의 상태가 변경될 때 마다 새로운 상태를 전달받습니다.
 
