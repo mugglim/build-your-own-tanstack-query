@@ -2,7 +2,7 @@
 
 The core layer does not depend on any specific library. Let's learn how to implement the core logic of `QueryClient`, `QueryCache`, `Query`, and `QueryObserver` directly.
 
-## Step1: QueryClient
+## Step 1: QueryClient
 
 The `QueryClient` is arguably the most important object in the core of TanStack Query. Most of the features provided by TanStack Query are accessed through the `QueryClient`.
 
@@ -80,7 +80,7 @@ export function hashKey(queryKey) {
 }
 ```
 
-## Step2: QueryCache
+## Step 2: QueryCache
 
 TanStack Query provides data caching functionality. `QueryCache` implements caching by storing `Query` object instances in **browser memory**.
 
@@ -177,7 +177,7 @@ class QueryCache {
 }
 ```
 
-## Step3: Query
+## Step 3: Query
 
 `Query` fetches and manages server state in TanStack Query.
 
@@ -308,7 +308,7 @@ When the `gcTime` timeout expires, `QueryCache` removes the `Query`.
 If any subscriber exists, `clearGcTimeout` cancels the timeout.
 When all subscribers unsubscribe, `scheduleGcTimeout` sets the timeout again.
 
-## Step4: QueryObserver
+## Step 4: QueryObserver
 
 `QueryObserver` optimizes subscriptions to `Query`.
 For example, it uses `staleTime` to prevent unnecessary `fetch` calls.

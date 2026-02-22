@@ -9,7 +9,7 @@ React에서 코어 영역의 코드를 사용하는 방법을 알아봅시다.
 
 위 요구사항을 만족하는 `useQuery` 커스텀훅을 구현해 봅시다.
 
-## Step1. QueryClient 공유하기
+## Step 1. QueryClient 공유하기
 
 `QueryClient`는 전역에서 접근이 가능한 객체입니다. Context API를 이용하여 전역으로 `QueryClient`를 공유하는 커스텀 Hook을 작성해 봅시다.
 
@@ -52,7 +52,7 @@ const App = ({ children }) => {
 };
 ```
 
-## Step2: 서버 상태 조회하기
+## Step 2: 서버 상태 조회하기
 
 React에서 서버 상태를 조회하려면 코어 영역의 어떤 객체를 사용해야 할까요?
 
@@ -76,7 +76,7 @@ const useBaseQuery = (options, Observer, queryClient) => {
 
 이제 서버 상태를 조회하고 상태가 변경될 떄마다 이벤트를 전달받을 수 있습니다. 하지만 리렌더링은 발생하지 않습니다. 코어 영역의 코드는 React로 작성된 코드가 아닙니다. 그래서 `Query`의 상태가 변경되더라도 리렌더링이 발생하지 않습니다.
 
-## Step3: 리렌더링 발생시키기
+## Step 3: 리렌더링 발생시키기
 
 React는 18 버전부터 외부 상태를 구독할 수 있는 [useSyncExternalStore](https://ko.react.dev/reference/react/useSyncExternalStore) 커스텀 Hook을 제공하고 있습니다.
 
@@ -116,7 +116,7 @@ const useQuery = (options, queryClient) => {
 export default useQuery;
 ```
 
-## Step4: 동작 검증하기
+## Step 4: 동작 검증하기
 
 마지막으로 `useQuery`의 동작을 검증해 봅시다.
 

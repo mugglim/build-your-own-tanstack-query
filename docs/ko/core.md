@@ -2,7 +2,7 @@
 
 코어 영역은 특정 라이브러리를 의존하지 않습니다. 코어 영역의 핵심 로직인 `QueryClient`, `QueryCache`, `Query`, `QueryObserver`를 직접 구현하는 방법을 알아봅시다.
 
-## Step1: QueryClient
+## Step 1: QueryClient
 
 `QueryClient`는 코어 영역에서 가장 중요한 객체라고 말할 수 있습니다. TanStack Query에서 제공하는 많은 기능들을 `QueryClient`를 통해 제공하기 때문입니다. 그래서 `QueryClient`는 전역에서 접근을 허용하는 경우가 많습니다. 주로 애플리케이션 시작 시점에 `QueryClient` 인스턴스를 생성하여 공유합니다. React 환경에서는 `useContext` API를 통해 컴포넌트 간 `QueryClient` 인스턴스를 공유합니다.
 
@@ -76,7 +76,7 @@ export function hashKey(queryKey) {
 }
 ```
 
-## Step2: QueryCache
+## Step 2: QueryCache
 
 TanStack Query는 데이터를 캐싱하는 기능을 제공합니다. `QueryCache`는 `Query` 객체의 인스턴스를 **브라우저 메모리**에 저장하여 캐싱을 구현합니다.
 
@@ -174,7 +174,7 @@ class QueryCache {
 }
 ```
 
-## Step3: Query
+## Step 3: Query
 
 `Query`는 TanStack Query에서 서버 상태를 조회하고 관리합니다.
 
@@ -304,7 +304,7 @@ export class Query {
 
 단, `Query`에 구독이 발생될 때마다 `clearGcTimeout` 메소드를 사용하여 `gcTime` timeout이 초기화됩니다. 만약 구독이 해제될 때 구독된 구독자가 없다면 `scheduleGcTimeout`을 통해 `gcTime` timeout이 다시 할당됩니다.
 
-## Step4: QueryObserver
+## Step 4: QueryObserver
 
 `QueryObserver`는 `Query`의 최적화 용도로 사용됩니다. 예를 들어 `staleTime`을 활용하여 불필요한 `Query`의 `fetch` 호출을 방지합니다.
 
