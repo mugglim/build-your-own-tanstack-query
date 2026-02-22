@@ -1,16 +1,11 @@
 # Overview
 
-We're going to rewrite TanStack Query and useQuery from scratch.
-
-> [!WARNING] The English translation was helped by AI.
->
-> - Please feel to create an issue if you find any awkward wording.
-> - https://github.com/mugglim/build-your-own-tanstack-query/issues
+We're going to build TanStack Query and useQuery from scratch.
 
 ## Goal
 
 - Learn how TanStack Query works.
-- Learn how to use TanStack Query in React.
+- Learn how to integrate TanStack Query into React.
 
 ## Getting Started
 
@@ -27,7 +22,7 @@ npm run dev
 
 ## Result
 
-You can check out the completed implementation on [GitHub](https://github.com/mugglim/build-your-own-tanstack-query).
+The completed implementation is available on [GitHub](https://github.com/mugglim/build-your-own-tanstack-query).
 
 <video width="100%" height="240" controls>
   <source src="/demo.mov" type="video/mp4">

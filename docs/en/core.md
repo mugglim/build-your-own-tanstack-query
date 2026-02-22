@@ -64,7 +64,7 @@ const queryClient = new QueryClient({
 
 ### When is QueryClient usually created?
 
-Create it at the application startup. After creating the `QueryClient` instance, allow global access and share the instance.
+Create it at the application startup. After creating the `QueryClient` instance, make it globally accessible.
 
 > [!TIP] React QueryClientProvider
 >
@@ -80,7 +80,7 @@ export function hashKey(queryKey) {
 }
 ```
 
-## Step2: QueryCache
+## Step 2: QueryCache
 
 TanStack Query provides data caching functionality. `QueryCache` implements caching by storing `Query` object instances in **browser memory**.
 
@@ -177,11 +177,11 @@ class QueryCache {
 }
 ```
 
-## Step3: Query
+## Step 3: Query
 
 `Query` fetches and manages server state in TanStack Query.
 
-`Query` tracks the fetch status (pending, success, error) and data as its state. It notifies subscribers whenever the state changes. Additionally, `Query` prevents duplicate fetch requests for the same data.
+`Query` tracks the fetch status (pending, success, error) and data as its state. Subscribers are notified whenever the state changes. Additionally, `Query` prevents duplicate fetch requests for the same data.
 
 ```javascript
 export class Query {
@@ -285,7 +285,7 @@ export class Query {
 
 ### How does server state management work?
 
-Server state management divides into fetching and updating.
+Server state management consists of two parts: fetching and updating.
 
 **Fetching server state** uses the `fetch` method and the `queryFn` function passed when creating the `Query`.
 To prevent duplicate requests, `Query` stores the Promise handling the request in an internal variable called `promise`.
@@ -303,12 +303,12 @@ To prevent duplicate requests, `Query` stores the Promise handling the request i
 `gcTime` defines how long `QueryCache` keeps a cached `Query` before removing it.
 
 `Query` uses `setTimeout` at creation and manages this via `scheduleGcTimeout`.
-When the `gcTime` timeout fires, `QueryCache` removes the `Query`.
+When the `gcTime` timeout expires, `QueryCache` removes the `Query`.
 
 If any subscriber exists, `clearGcTimeout` cancels the timeout.
 When all subscribers unsubscribe, `scheduleGcTimeout` sets the timeout again.
 
-## Step4: QueryObserver
+## Step 4: QueryObserver
 
 `QueryObserver` optimizes subscriptions to `Query`.
 For example, it uses `staleTime` to prevent unnecessary `fetch` calls.
@@ -364,10 +364,10 @@ class QueryObserver {
 
 ### What is `staleTime`?
 
-`staleTime` means the time interval after which the server state changes from fresh to stale.
+`staleTime` defines the time interval after which the server state changes from fresh to stale.
 
-`Query` saves the last time the server state changed in the `lastUpdated` variable.
-`QueryObserver` uses `lastUpdated` to decide whether to run `fetch`. It runs `fetch` only if `Date.now() - lastUpdated` is greater than `staleTime`.
+`Query` tracks the last time the server state was updated in the `lastUpdated` variable.
+`QueryObserver` uses `lastUpdated` to decide whether to call `fetch` — specifically, only when `Date.now() - lastUpdated` exceeds `staleTime`.
 
 | `Date.now() - lastUpdated` > `staleTime` | Should `fetch` run? |
 | :--------------------------------------: | :-----------------: |
