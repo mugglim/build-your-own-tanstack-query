@@ -9,7 +9,7 @@ When we use TanStack Query in React, we expect two main features:
 
 Let's implement a custom hook `useQuery` that satisfies these requirements.
 
-## Step 1. Sharing QueryClient
+## Step1. Sharing QueryClient
 
 `QueryClient` is an object accessible globally.
 
@@ -76,7 +76,7 @@ const useBaseQuery = (options, Observer, queryClient) => {
 };
 ```
 
-Now you can fetch server state and receive events whenever the state changes. However, React won’t re-render automatically because the core code is not built with React. So, even if the `Query` state changes, no re-render happens.
+Now you can fetch server state and observe changes whenever the state updates. However, React won’t re-render automatically because the core code is not built with React. As a result, even if the `Query` state changes, no re-render occurs.
 
 ## Step3: Triggering Re-render
 
@@ -118,7 +118,7 @@ const useQuery = (options, queryClient) => {
 export default useQuery;
 ```
 
-## Step4: Verify Results
+## Step4: Verifying Results
 
 Finally, let's verify that `useQuery` works as expected.
 
@@ -170,7 +170,7 @@ const App = () => {
 };
 ```
 
-Please refer to the video below for the correct result.
+See the video below to verify the expected behavior.
 
 <video width="100%" height="240" controls>
   <source src="/demo.mov" type="video/mp4">

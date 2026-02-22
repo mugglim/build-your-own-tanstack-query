@@ -1,17 +1,17 @@
 # ReactQueryDevTools
 
-## Explanation
+## Overview
 
-Let's build the [ReactQueryDevTools](https://tanstack.com/query/v5/docs/framework/react/devtools) for TanStack Query.
+Let's build the ReactQueryDevTools from scratch.
 
 ## Requirements
 
 - Display the cached `Query`'s status, staleTime, and gcTime information.
-- Refresh the list of cached `Query` objects whenever changes occur.
+- Update the list of cached `Query` objects whenever changes occur.
 
 ## Solution
 
-To detect changes in the cached `Query` objects inside the `QueryCache`, apply a subscription feature to `QueryCache`.
+To detect changes in the cached `Query` objects inside the `QueryCache`, add subscription support to `QueryCache`.
 
 ### QueryCache
 
@@ -43,7 +43,7 @@ class QueryCache {
 
 ### Query
 
-`Query` calls the `notify` method of `QueryCache` whenever the server state changes. This method publishes events to all subscribers registered to the `QueryCache`.
+`Query` calls the `notify` method of `QueryCache` whenever the server state changes. This method publishes events to all subscribers registered with the `QueryCache`.
 
 ```jsx
 class Query {
@@ -118,7 +118,7 @@ const ReactQueryDevtools = () => {
 };
 ```
 
-Rendering `ReactQueryDevtools` in the top-level component allows you to verify that the DevTools work correctly.
+Add `ReactQueryDevtools` to the top-level component to confirm the DevTools are working.
 
 ```jsx
 const App = ({ children }) => {

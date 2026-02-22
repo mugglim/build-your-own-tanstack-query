@@ -1,8 +1,8 @@
 # Window Focus Refetching
 
-## Explanation
+## Overview
 
-Let's implement logic to refetch the state when the browser's focus changes.
+Let's implement refetching when the browser regains focus.
 
 ## Requirements
 
@@ -12,7 +12,7 @@ Let's implement logic to refetch the state when the browser's focus changes.
 
 ### QueryCache
 
-`QueryCache` manages the list of Queries. Implement an `onFocus` method that fetches each Query by iterating over the cached Queries as follows.
+`QueryCache` manages the list of Queries. Implement an `onFocus` method that iterates over all cached Queries and calls `fetch` on each.
 
 ```jsx
 class QueryCache {
@@ -35,9 +35,9 @@ class QueryCache {
 
 ### QueryClientProvider
 
-We can detect focus state changes using the `visibilitychange` event on the `document` object.
+We can detect focus changes using the `visibilitychange` event.
 
-When the `visibilitychange` event fires, if `document.visibilityState !== 'hidden'`, it means the browser has regained focus. In this case, call the `focus` method of `QueryCache` to trigger `fetch` on active Queries.
+When the `visibilitychange` event fires, if `document.visibilityState !== 'hidden'`, it means the browser has regained focus. In this case, call the `onFocus` method of `QueryCache` to trigger `fetch` on all cached Queries.
 
 ```jsx
 export const QueryClientProvider = ({ children, client }) => {
