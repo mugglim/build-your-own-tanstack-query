@@ -5,7 +5,7 @@ We're going to build TanStack Query and useQuery from scratch.
 ## Goal
 
 - Learn how TanStack Query works.
-- Understand how to integrate TanStack Query into React.
+- Learn how to integrate TanStack Query into React.
 
 ## Getting Started
 
